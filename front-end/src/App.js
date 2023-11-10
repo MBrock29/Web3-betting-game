@@ -6,21 +6,22 @@ import Header from "./components/header/Header";
 import { ethers } from "ethers";
 
 function App() {
-  const [balance, setBalance] = useState<Number>(0);
+  const [balance, setBalance] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [betAmount, setBetAmount] = useState<string>("");
-  const [randomNumber, setRandomNumber] = useState<Number>(20);
+  const [betAmount, setBetAmount] = useState("");
+  const [randomNumber, setRandomNumber] = useState(20);
   const [walletConnected, setWalletConnected] = useState(false);
   const [resultIn, setResultIn] = useState(false);
-  const web3ModalRef = useRef<Web3Modal>();
+  const web3ModalRef = useRef();
   const [account, setAccount] = useState(null);
   const [wrongNetwork, setWrongNetwork] = useState(false);
   const [result, setResult] = useState(null);
+  const [depositAmount, setDepositAmount] = useState(0);
 
   const getProviderOrSigner = async (needSigner = false) => {
     if (web3ModalRef.current) {
       const provider = await web3ModalRef.current.connect();
-      const web3Provider = new ethers.providers.Web3Provider(provider);
+      const web3Provider = new ethers.BrowserProvider(provider);
       const { chainId } = await web3Provider.getNetwork();
       if (chainId !== 11155111) {
         console.log("please change network");
@@ -106,7 +107,27 @@ function App() {
     }
   };
 
-  const betLow = async () => {
+  const betDraw = async () => {
+    try {
+      const provider = await getProviderOrSigner(true);
+      const randomiserContract = new ethers.Contract(
+        randomiser_CONTRACT_ADDRESS,
+        abi,
+        provider
+      );
+      const transaction = await randomiserContract.betLow(betAmount);
+      setLoading(true);
+      await transaction.wait();
+      setResultIn(true);
+      await getRandomNumber();
+      await getBalance(account);
+    } catch (err) {
+      console.error(err);
+      setLoading(false);
+    }
+  };
+
+  const betAwayTeam = async () => {
     try {
       const provider = await getProviderOrSigner(true);
       const randomiserContract = new ethers.Contract(
@@ -135,7 +156,7 @@ function App() {
         provider
       );
       const transaction = await randomiserContract.deposit({
-        value: ethers.utils.parseUnits("0.01", "ether"),
+        value: ethers.utils.parseUnits(depositAmount, "ether"),
       });
       setLoading(true);
       await transaction.wait();
@@ -201,7 +222,7 @@ function App() {
       </div>
     );
   return (
-    <div className={s.app}>
+    <div>
       <Header
         deposit={deposit}
         withdraw={withdraw}
@@ -209,8 +230,8 @@ function App() {
         address={account}
         balance={balance}
       />
-      <div className={s.background}>
-        <div className={s.header}>
+      <div>
+        <div>
           <h3>
             Stake an amount and choose whether you think the random number will
             be high or low.
@@ -218,19 +239,21 @@ function App() {
             Double your stake if you win!
           </h3>
         </div>
-        <div className={s.buttonsContainer}>
+        <div>
           <input
-            className={s.input}
             type="number"
             placeholder="Enter bet amount"
             max={balance}
             onChange={(e) => setBetAmount(e.target.value)}
           />
-          <button className={s.button} onClick={betLow} disabled={betDisabled}>
-            Bet 1-50
+          <button onClick={betHomeTeam} disabled={betDisabled}>
+            Bet home team
           </button>
-          <button className={s.button} onClick={betHigh} disabled={betDisabled}>
-            Bet 51-100
+          <button onClick={betDraw} disabled={betDisabled}>
+            Bet draw
+          </button>
+          <button onClick={betAwayTeam} disabled={betDisabled}>
+            Bet away team
           </button>
         </div>
         <div>
@@ -245,7 +268,7 @@ function App() {
           </div>
         )}
       </div>
-      {resultIn && (
+      {/* {resultIn && (
         <div>
           {result ? (
             <img
@@ -261,7 +284,7 @@ function App() {
             />
           )}
         </div>
-      )}
+      )} */}
       {wrongNetwork && (
         <div>
           <h1>Network error. Please connect to Rinkeby test network.</h1>
