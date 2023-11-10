@@ -56,5 +56,23 @@ contract BettingGame {
             address(this).balance
         );
     }
+
+    function getIndividualPlayer(address addr) public view returns (Player memory) {
+        return players[addr];
+    }
+
+    function betHomeTeam(uint256 amount) public { 
+        betAmount = amount;
+        rand = uint256(keccak256(abi.encodePacked(block.timestamp)));
+        randomNumber = (rand % 100) + 1;
+        if (randomNumber < 34) {
+            winnings = betAmount;
+            players[msg.sender].balance = players[msg.sender].balance + winnings;
+            win = true;
+        } else {
+            players[msg.sender].balance = players[msg.sender].balance - betAmount;
+            win = false;
+        }
+    }
     
 }
