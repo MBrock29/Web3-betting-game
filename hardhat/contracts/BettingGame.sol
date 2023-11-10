@@ -89,7 +89,7 @@ contract BettingGame {
         }
     }
 
-    function betHomeTeam(uint256 amount) public { 
+    function betAwayTeam(uint256 amount) public { 
         betAmount = amount;
         rand = uint256(keccak256(abi.encodePacked(block.timestamp)));
         randomNumber = (rand % 100) + 1;
