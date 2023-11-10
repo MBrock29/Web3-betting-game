@@ -74,5 +74,44 @@ contract BettingGame {
             win = false;
         }
     }
-    
+
+    function betDraw(uint256 amount) public { 
+        betAmount = amount;
+        rand = uint256(keccak256(abi.encodePacked(block.timestamp)));
+        randomNumber = (rand % 100) + 1;
+        if (randomNumber < 67 && randomNumber > 33) {
+            winnings = betAmount;
+            players[msg.sender].balance = players[msg.sender].balance + winnings;
+            win = true;
+        } else {
+            players[msg.sender].balance = players[msg.sender].balance - betAmount;
+            win = false;
+        }
+    }
+
+    function betHomeTeam(uint256 amount) public { 
+        betAmount = amount;
+        rand = uint256(keccak256(abi.encodePacked(block.timestamp)));
+        randomNumber = (rand % 100) + 1;
+        if (randomNumber > 66) {
+            winnings = betAmount;
+            players[msg.sender].balance = players[msg.sender].balance + winnings;
+            win = true;
+        } else {
+            players[msg.sender].balance = players[msg.sender].balance - betAmount;
+            win = false;
+        }
+    }
+
+    function getBalance(address userAddress) public view returns (uint256) {
+        return players[userAddress].balance;
+    }
+
+    function getRandomNumber() public view returns (uint256) {
+        return randomNumber;
+    }
+
+    function getResult() public view returns (bool) {
+        return win;
+    }
 }
