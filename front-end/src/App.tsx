@@ -6,10 +6,10 @@ import Header from "./components/header/Header";
 import { ethers } from "ethers";
 
 function App() {
-  const [balance, setBalance] = useState(0);
+  const [balance, setBalance] = useState<Number>(0);
   const [loading, setLoading] = useState(false);
-  const [betAmount, setBetAmount] = useState("");
-  const [randomNumber, setRandomNumber] = useState(20);
+  const [betAmount, setBetAmount] = useState<string>("");
+  const [randomNumber, setRandomNumber] = useState<Number>(20);
   const [walletConnected, setWalletConnected] = useState(false);
   const [resultIn, setResultIn] = useState(false);
   const web3ModalRef = useRef<Web3Modal>();
@@ -22,7 +22,7 @@ function App() {
       const provider = await web3ModalRef.current.connect();
       const web3Provider = new ethers.providers.Web3Provider(provider);
       const { chainId } = await web3Provider.getNetwork();
-      if (chainId !== 4) {
+      if (chainId !== 11155111) {
         console.log("please change network");
         setWrongNetwork(true);
       }
