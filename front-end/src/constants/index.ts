@@ -250,5 +250,5 @@ export const abi = [
     type: "function",
   },
 ];
-export const randomiser_CONTRACT_ADDRESS =
+export const BETTING_GAME_CONTRACT_ADDRESS =
   "0xAA4c6aF633047bC8010dE9ce43da46f5aB4d59dF";

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import "./App.css";
 import Web3Modal from "web3modal";
-import { randomiser_CONTRACT_ADDRESS, abi } from "./constants/index";
+import { BETTING_GAME_CONTRACT_ADDRESS, abi } from "./constants/index";
 import Header from "./components/header/Header";
 import { ethers } from "ethers";
 
@@ -22,11 +22,11 @@ function App() {
     if (web3ModalRef.current) {
       const provider = await web3ModalRef.current.connect();
       const web3Provider = new ethers.BrowserProvider(provider);
-      const { chainId } = await web3Provider.getNetwork();
-      if (chainId !== 11155111) {
-        console.log("please change network");
-        setWrongNetwork(true);
-      }
+      // const { chainId } = await web3Provider.getNetwork();
+      // if (chainId !== 11155111) {
+      //   console.log("please change network");
+      //   setWrongNetwork(true);
+      // }
 
       if (needSigner) {
         const signer = web3Provider.getSigner();
@@ -53,13 +53,13 @@ function App() {
   const getBalance = async (id) => {
     try {
       const provider = await getProviderOrSigner();
-      const randomiserContract = new ethers.Contract(
-        randomiser_CONTRACT_ADDRESS,
+      const bettingGameContract = new ethers.Contract(
+        BETTING_GAME_CONTRACT_ADDRESS,
         abi,
         provider
       );
       setBalance(
-        ethers.utils.formatUnits(await randomiserContract.getBalance(id), 0)
+        ethers.formatUnits(await bettingGameContract.getBalance(id), 0)
       );
       setLoading(false);
     } catch (err) {
@@ -71,15 +71,15 @@ function App() {
   const getRandomNumber = async () => {
     try {
       const provider = await getProviderOrSigner();
-      const randomiserContract = new ethers.Contract(
-        randomiser_CONTRACT_ADDRESS,
+      const bettingGameContract = new ethers.Contract(
+        BETTING_GAME_CONTRACT_ADDRESS,
         abi,
         provider
       );
-      const rand = await randomiserContract.getRandomNumber();
+      const rand = await bettingGameContract.getRandomNumber();
       setBetAmount("");
-      setRandomNumber(ethers.utils.formatUnits(rand, 0));
-      const outcome = await randomiserContract.getResult();
+      setRandomNumber(ethers.formatUnits(rand, 0));
+      const outcome = await bettingGameContract.getResult();
       setResult(outcome);
       console.log(outcome);
     } catch (err) {
@@ -90,12 +90,12 @@ function App() {
   const betHomeTeam = async () => {
     try {
       const provider = await getProviderOrSigner(true);
-      const randomiserContract = new ethers.Contract(
-        randomiser_CONTRACT_ADDRESS,
+      const bettingGameContract = new ethers.Contract(
+        BETTING_GAME_CONTRACT_ADDRESS,
         abi,
         provider
       );
-      const transaction = await randomiserContract.betHomeTeam(betAmount);
+      const transaction = await bettingGameContract.betHomeTeam(betAmount);
       setLoading(true);
       await transaction.wait();
       setResultIn(true);
@@ -110,12 +110,12 @@ function App() {
   const betDraw = async () => {
     try {
       const provider = await getProviderOrSigner(true);
-      const randomiserContract = new ethers.Contract(
-        randomiser_CONTRACT_ADDRESS,
+      const bettingGameContract = new ethers.Contract(
+        BETTING_GAME_CONTRACT_ADDRESS,
         abi,
         provider
       );
-      const transaction = await randomiserContract.betLow(betAmount);
+      const transaction = await bettingGameContract.betLow(betAmount);
       setLoading(true);
       await transaction.wait();
       setResultIn(true);
@@ -130,12 +130,12 @@ function App() {
   const betAwayTeam = async () => {
     try {
       const provider = await getProviderOrSigner(true);
-      const randomiserContract = new ethers.Contract(
-        randomiser_CONTRACT_ADDRESS,
+      const bettingGameContract = new ethers.Contract(
+        BETTING_GAME_CONTRACT_ADDRESS,
         abi,
         provider
       );
-      const transaction = await randomiserContract.betLow(betAmount);
+      const transaction = await bettingGameContract.betLow(betAmount);
       setLoading(true);
       await transaction.wait();
       setResultIn(true);
@@ -150,13 +150,13 @@ function App() {
   const deposit = async () => {
     try {
       const provider = await getProviderOrSigner(true);
-      const randomiserContract = new ethers.Contract(
-        randomiser_CONTRACT_ADDRESS,
+      const bettingGameContract = new ethers.Contract(
+        BETTING_GAME_CONTRACT_ADDRESS,
         abi,
         provider
       );
-      const transaction = await randomiserContract.deposit({
-        value: ethers.utils.parseUnits(depositAmount, "ether"),
+      const transaction = await bettingGameContract.deposit({
+        value: ethers.parseUnits("0.0001", "ether"),
       });
       setLoading(true);
       await transaction.wait();
@@ -169,13 +169,13 @@ function App() {
   const withdraw = async () => {
     try {
       const provider = await getProviderOrSigner(true);
-      const randomiserContract = new ethers.Contract(
-        randomiser_CONTRACT_ADDRESS,
+      const bettingGameContract = new ethers.Contract(
+        BETTING_GAME_CONTRACT_ADDRESS,
         abi,
         provider
       );
       const withdrawAmount = (balance * 100000000000000).toString();
-      const transaction = await randomiserContract.withdraw(withdrawAmount);
+      const transaction = await bettingGameContract.withdraw(withdrawAmount);
       setLoading(true);
       await transaction.wait();
       await getBalance(account);
