@@ -1,18 +1,11 @@
 const { ethers } = require("hardhat");
 
 async function main() {
-  const bettingGameContract = await ethers.getContractFactory("BettingGame");
+  const GameContract = await ethers.getContractFactory("Game");
 
-  const deployedBettingGameContract = await bettingGameContract.deploy();
+  const deployedGameContract = await GameContract.deploy();
 
-  console.log(
-    "Betting Game Contract Address:",
-    deployedBettingGameContract.address
-  );
-  console.log(
-    "Deployment transaction:",
-    deployedBettingGameContract.deployTransaction
-  );
+  console.log(" Game Contract Address:", deployedGameContract.address);
 }
 
 main()
