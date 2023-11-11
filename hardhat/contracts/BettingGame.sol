@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.19;
 
 contract BettingGame {
     uint256 balance;
@@ -93,7 +93,7 @@ contract BettingGame {
         betAmount = amount;
         rand = uint256(keccak256(abi.encodePacked(block.timestamp)));
         randomNumber = (rand % 100) + 1;
-        if (randomNumber > 66) {
+        if (randomNumber > 67) {
             winnings = betAmount;
             players[msg.sender].balance = players[msg.sender].balance + winnings;
             win = true;
