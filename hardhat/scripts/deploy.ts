@@ -6,7 +6,7 @@ async function main() {
 
   const deployedGameContract = await GameContract.deploy();
 
-  console.log("Contract address", deployedGameContract.runner.address);
+  console.log("Contract address", deployedGameContract);
 }
 
 main()
