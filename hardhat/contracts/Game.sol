@@ -24,8 +24,6 @@ contract Game {
         uint256 weiAmount,
         uint256 contractBalance
     );
-    
-  
 
     address public owner;
 
