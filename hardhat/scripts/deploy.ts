@@ -1,3 +1,4 @@
+import { ContractRunner } from "ethers";
 const { ethers } = require("hardhat");
 
 async function main() {
@@ -5,7 +6,7 @@ async function main() {
 
   const deployedGameContract = await GameContract.deploy();
 
-  console.log("Contract address", deployedGameContract);
+  console.log("Contract address", deployedGameContract.runner.address);
 }
 
 main()
