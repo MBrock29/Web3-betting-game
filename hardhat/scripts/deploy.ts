@@ -4,6 +4,8 @@ async function main() {
   const GameContract = await ethers.getContractFactory("Game");
 
   const deployedGameContract = await GameContract.deploy();
+
+  console.log("Contract address", deployedGameContract);
 }
 
 main()
