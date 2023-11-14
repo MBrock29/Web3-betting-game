@@ -1,5 +1,5 @@
-import "@nomicfoundation/hardhat-toolbox";
 require("dotenv").config({ path: ".env" });
+import "@nomicfoundation/hardhat-toolbox";
 
 const ALCHEMY_API_KEY_URL = process.env.ALCHEMY_API_KEY_URL;
 

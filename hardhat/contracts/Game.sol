@@ -109,6 +109,10 @@ contract Game {
         return players[userAddress].balance;
     }
 
+    function getContractBalance() public view returns (uint256) {
+        return address(this).balance;
+    }
+
     function getRandomNumber() public view returns (uint256) {
         return randomNumber;
     }

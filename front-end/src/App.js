@@ -156,7 +156,7 @@ function App() {
         provider
       );
       const transaction = await bettingGameContract.deposit({
-        value: ethers.parseUnits("0.0001", "ether"),
+        value: ethers.parseUnits("0.01", "ether"),
       });
       setLoading(true);
       await transaction.wait();
@@ -176,6 +176,7 @@ function App() {
       );
       const withdrawAmount = (balance * 100000000000000).toString();
       const transaction = await bettingGameContract.withdraw(withdrawAmount);
+
       setLoading(true);
       await transaction.wait();
       await getBalance(account);
@@ -228,7 +229,7 @@ function App() {
         withdraw={withdraw}
         withdrawalAllowed={withdrawalAllowed}
         address={account}
-        balance={balance}
+        balance={balance / 1000000000000000000}
       />
       <div>
         <div>
