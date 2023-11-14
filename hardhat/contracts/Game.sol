@@ -49,7 +49,7 @@ contract Game {
     );
 
     function withdraw(uint256 balanceAmount) public payable {
-        require(amount <= players[msg.sender].balance, "Insufficient balance");
+        require(balanceAmount <= players[msg.sender].balance, "Insufficient balance");
         payable(msg.sender).transfer(balanceAmount);
         players[msg.sender].balance -= balanceAmount;
         emit Withdraw(
