@@ -294,4 +294,4 @@ export const abi = [
   },
 ];
 export const BETTING_GAME_CONTRACT_ADDRESS =
-  "0x0d0e4b5869c3aa03f909d2baa180af3f10fb143c";
+  "0xc736f5c5734bf45ab513fbf2e90ee0894e10079c";

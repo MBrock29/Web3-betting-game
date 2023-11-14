@@ -114,9 +114,9 @@ function App() {
         abi,
         provider
       );
-      console.log(odds * 100);
+
       const transaction = await bettingGameContract.betHomeTeam(
-        (betAmount * weiConv).toString(),
+        ((betAmount * weiConv) / 10000).toString(),
         Math.round(odds * 100),
         perc
       );
@@ -208,7 +208,7 @@ function App() {
         abi,
         provider
       );
-      const withdrawAmount = ((withdrawalAmount * weiConv) / 1000).toString();
+      const withdrawAmount = ((withdrawalAmount * weiConv) / 10000).toString();
       console.log(withdrawAmount);
       const transaction = await bettingGameContract.withdraw(withdrawAmount);
       setLoading(true);
@@ -221,7 +221,6 @@ function App() {
 
   const betDisabled = betAmount < 100;
 
-  console.log(betAmount);
   const betInvalid = betAmount < 100;
 
   useEffect(() => {
@@ -261,14 +260,15 @@ function App() {
         withdraw={withdraw}
         withdrawalAllowed={withdrawalAllowed}
         address={account}
-        balance={(balance / weiConv) * 1000}
+        balance={(balance / weiConv) * 10000}
         setDepositAmount={setDepositAmount}
         setWithdrawalAmount={setWithdrawalAmount}
       />
       <div>
         <div>
-          <h3>Stake an amount and choose who you think will win the match!</h3>
-          <h3>Minimum bet amount: 100</h3>
+          <h4>Stake an amount and choose who you think will win the match!</h4>
+          <h4>Minimum bet amount: 100</h4>
+          <h4>Maximum bet amount: 1000</h4>
         </div>
         <div>
           <input

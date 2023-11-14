@@ -21,7 +21,7 @@ function Header({
           type="number"
           placeholder="Enter deposit amount"
           max={1}
-          onChange={(e) => setDepositAmount(e.target.value / 1000)}
+          onChange={(e) => setDepositAmount(e.target.value / 10000)}
         />
       </div>
       <div>
@@ -35,7 +35,7 @@ function Header({
           onChange={(e) => setWithdrawalAmount(e.target.value)}
         />
       </div>
-      <h3>1 test ETH = 1000 credits</h3>
+      <h3>0.1 test ETH = 1000 credits</h3>
     </div>
   );
 }
