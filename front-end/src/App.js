@@ -189,8 +189,9 @@ function App() {
         provider
       );
       console.log(depositAmount);
-      const depositAmt = ((depositAmount * weiConv) / 1000).toString();
-      const transaction = await bettingGameContract.deposit(depositAmt);
+      const transaction = await bettingGameContract.deposit({
+        value: ethers.parseUnits(depositAmount.toString(), "ether"),
+      });
       setLoading(true);
       await transaction.wait();
       await getBalance(account);
@@ -219,6 +220,9 @@ function App() {
   };
 
   const betDisabled = betAmount < 100;
+
+  console.log(betAmount);
+  const betInvalid = betAmount < 100;
 
   useEffect(() => {
     if (!walletConnected) {
@@ -305,7 +309,9 @@ function App() {
             </>
           ))}
         </div>
-        <div>{betDisabled ? <h3>Bet amount invalid</h3> : <h3></h3>}</div>
+        <div>
+          {betDisabled && betInvalid ? <h3>Bet amount invalid</h3> : <h3></h3>}
+        </div>
         {resultIn && (
           <div>
             <h1>

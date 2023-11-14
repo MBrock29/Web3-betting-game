@@ -21,7 +21,7 @@ function Header({
           type="number"
           placeholder="Enter deposit amount"
           max={1}
-          onChange={(e) => setDepositAmount(e.target.value)}
+          onChange={(e) => setDepositAmount(e.target.value / 1000)}
         />
       </div>
       <div>
