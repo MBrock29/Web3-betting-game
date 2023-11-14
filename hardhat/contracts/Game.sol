@@ -66,11 +66,11 @@ contract Game {
         rand = uint256(keccak256(abi.encodePacked(block.timestamp)));
         randomNumber = (rand % 100) + 1;
         if (randomNumber <= perc) {
-            winnings = amount * odds;
-             
+            winnings = ((amount * odds) / 100) - amount;
             players[msg.sender].balance = players[msg.sender].balance + winnings;
             win = true;
         } else {
+            require(players[msg.sender].balance >= amount, "Insufficient balance");
             players[msg.sender].balance = players[msg.sender].balance - amount;
             win = false;
         }
@@ -80,7 +80,7 @@ contract Game {
         rand = uint256(keccak256(abi.encodePacked(block.timestamp)));
         randomNumber = (rand % 100) + 1;
         if (randomNumber <= perc) {
-            winnings = amount * ((odds / 100) - 1);
+            winnings = ((amount * odds) / 100) - amount;
             players[msg.sender].balance = players[msg.sender].balance + winnings;
             win = true;
         } else {
@@ -93,7 +93,7 @@ contract Game {
         rand = uint256(keccak256(abi.encodePacked(block.timestamp)));
         randomNumber = (rand % 100) + 1;
         if (randomNumber <= perc) {
-            winnings = amount * ((odds / 100) - 1);
+            winnings = ((amount * odds) / 100) - amount;
             players[msg.sender].balance = players[msg.sender].balance + winnings;
             win = true;
         } else {
