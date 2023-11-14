@@ -37,6 +37,42 @@ function App() {
     },
   ];
 
+  const homeWin = [
+    "1-0",
+    "2-0",
+    "3-0",
+    "4-0",
+    "5-0",
+    "5-1",
+    "5-2",
+    "5-3",
+    "5-4",
+    "4-1",
+    "4-2",
+    "4-3",
+    "3-2",
+    "3-1",
+    "2-1",
+  ];
+  const draw = ["0-0", "1-1", "2-2", "3-3", "4-4"];
+  const awayWin = [
+    "0-1",
+    "0-2",
+    "0-3",
+    "0-4",
+    "0-5",
+    "1-5",
+    "2-5",
+    "3-5",
+    "4-5",
+    "1-4",
+    "2-4",
+    "3-4",
+    "2-3",
+    "1-3",
+    "1-2",
+  ];
+
   const getProviderOrSigner = async (needSigner = false) => {
     if (web3ModalRef.current) {
       const provider = await web3ModalRef.current.connect();
@@ -316,7 +352,7 @@ function App() {
           <div>
             <h1>
               Result is... <br />
-              <span style={{ fontSize: 72 }}>{randomNumber}</span>
+              <span style={{ fontSize: 72 }}>{result}</span>
             </h1>
           </div>
         )}
