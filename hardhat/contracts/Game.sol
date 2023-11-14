@@ -62,12 +62,15 @@ contract Game {
         return players[addr];
     }
 
+    event BetResult(address indexed player, uint256 amountWon); 
+
     function betHomeTeam(uint256 amount, uint256 odds, uint256 perc) public { 
         rand = uint256(keccak256(abi.encodePacked(block.timestamp)));
         randomNumber = (rand % 100) + 1;
         if (randomNumber <= perc) {
             winnings = ((amount * odds) / 100) - amount;
             players[msg.sender].balance = players[msg.sender].balance + winnings;
+            emit BetResult(msg.sender, winnings);
             win = true;
         } else {
             require(players[msg.sender].balance >= amount, "Insufficient balance");

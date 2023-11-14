@@ -10,6 +10,25 @@ export const abi = [
       {
         indexed: true,
         internalType: "address",
+        name: "player",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amountWon",
+        type: "uint256",
+      },
+    ],
+    name: "BetResult",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
         name: "userAddress",
         type: "address",
       },
@@ -294,4 +313,4 @@ export const abi = [
   },
 ];
 export const BETTING_GAME_CONTRACT_ADDRESS =
-  "0xc736f5c5734bf45ab513fbf2e90ee0894e10079c";
+  "0x404dc6a315c3b0d9915665b4bfcac38666135130";
