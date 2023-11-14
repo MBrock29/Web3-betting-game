@@ -10,6 +10,9 @@ contract Game {
     uint256 public payoutAmount;
     uint256 depositAmount;
     bool win;
+    uint256 homeOdds;
+    uint256 drawOdds;
+    uint256 awayOdds;
 
     struct Player {
         address walletAddress;
@@ -68,7 +71,7 @@ contract Game {
         rand = uint256(keccak256(abi.encodePacked(block.timestamp)));
         randomNumber = (rand % 100) + 1;
         if (randomNumber < 34) {
-            winnings = betAmount;
+            winnings = betAmount * homeOdds;
             players[msg.sender].balance = players[msg.sender].balance + winnings;
             win = true;
         } else {

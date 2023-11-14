@@ -180,10 +180,7 @@ function App() {
         withdrawalAmount * 1000000000000000000
       ).toString();
       console.log(withdrawAmount);
-      const transaction = await bettingGameContract.withdraw({
-        value: ethers.parseUnits(withdrawalAmount, "ether"),
-      });
-
+      const transaction = await bettingGameContract.withdraw(withdrawAmount);
       setLoading(true);
       await transaction.wait();
       await getBalance(account);
