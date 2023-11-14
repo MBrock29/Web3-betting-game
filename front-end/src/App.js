@@ -114,9 +114,10 @@ function App() {
         abi,
         provider
       );
+      console.log(odds * 100);
       const transaction = await bettingGameContract.betHomeTeam(
         (betAmount * weiConv).toString(),
-        odds,
+        Math.round(odds * 100),
         perc
       );
       setLoading(true);
@@ -140,7 +141,7 @@ function App() {
       );
       const transaction = await bettingGameContract.betDraw(
         (betAmount * weiConv).toString(),
-        odds,
+        Math.round(odds * 100),
         perc
       );
       setLoading(true);
@@ -162,9 +163,10 @@ function App() {
         abi,
         provider
       );
+
       const transaction = await bettingGameContract.betAwayTeam(
         (betAmount * weiConv).toString(),
-        odds,
+        Math.round(odds * 100),
         perc
       );
       setLoading(true);
@@ -187,9 +189,8 @@ function App() {
         provider
       );
       console.log(depositAmount);
-      const transaction = await bettingGameContract.deposit({
-        value: ethers.parseUnits(depositAmount, "ether"),
-      });
+      const depositAmt = ((depositAmount * weiConv) / 1000).toString();
+      const transaction = await bettingGameContract.deposit(depositAmt);
       setLoading(true);
       await transaction.wait();
       await getBalance(account);
@@ -206,7 +207,7 @@ function App() {
         abi,
         provider
       );
-      const withdrawAmount = (withdrawalAmount * weiConv).toString();
+      const withdrawAmount = ((withdrawalAmount * weiConv) / 1000).toString();
       console.log(withdrawAmount);
       const transaction = await bettingGameContract.withdraw(withdrawAmount);
       setLoading(true);
@@ -217,10 +218,7 @@ function App() {
     }
   };
 
-  const betDisabled =
-    parseInt(betAmount) > parseInt(balance) || betAmount < 0.01;
-
-  const betInvalid = betAmount === "";
+  const betDisabled = betAmount < 100;
 
   useEffect(() => {
     if (!walletConnected) {
@@ -259,13 +257,14 @@ function App() {
         withdraw={withdraw}
         withdrawalAllowed={withdrawalAllowed}
         address={account}
-        balance={balance / weiConv}
+        balance={(balance / weiConv) * 1000}
         setDepositAmount={setDepositAmount}
         setWithdrawalAmount={setWithdrawalAmount}
       />
       <div>
         <div>
           <h3>Stake an amount and choose who you think will win the match!</h3>
+          <h3>Minimum bet amount: 100</h3>
         </div>
         <div>
           <input
@@ -286,7 +285,7 @@ function App() {
                 </div>
               </button>
               <button
-                onClick={() => betDraw(x.drawOddsDecDec, x.drawPerc)}
+                onClick={() => betDraw(x.drawOddsDec, x.drawPerc)}
                 disabled={betDisabled}
               >
                 <div>
@@ -306,9 +305,7 @@ function App() {
             </>
           ))}
         </div>
-        <div>
-          {betDisabled && !betInvalid ? <h3>Bet amount invalid</h3> : <h3></h3>}
-        </div>
+        <div>{betDisabled ? <h3>Bet amount invalid</h3> : <h3></h3>}</div>
         {resultIn && (
           <div>
             <h1>

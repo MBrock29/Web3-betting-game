@@ -61,6 +61,16 @@ export const abi = [
         name: "amount",
         type: "uint256",
       },
+      {
+        internalType: "uint256",
+        name: "odds",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "perc",
+        type: "uint256",
+      },
     ],
     name: "betAwayTeam",
     outputs: [],
@@ -72,6 +82,16 @@ export const abi = [
       {
         internalType: "uint256",
         name: "amount",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "odds",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "perc",
         type: "uint256",
       },
     ],
@@ -89,12 +109,12 @@ export const abi = [
       },
       {
         internalType: "uint256",
-        name: "homeOdds",
+        name: "odds",
         type: "uint256",
       },
       {
         internalType: "uint256",
-        name: "homePerc",
+        name: "perc",
         type: "uint256",
       },
     ],
@@ -274,4 +294,4 @@ export const abi = [
   },
 ];
 export const BETTING_GAME_CONTRACT_ADDRESS =
-  "0x5cfd50f135fa4bb709c7782059a494c7290362ee";
+  "0x0d0e4b5869c3aa03f909d2baa180af3f10fb143c";

@@ -35,6 +35,7 @@ function Header({
           onChange={(e) => setWithdrawalAmount(e.target.value)}
         />
       </div>
+      <h3>1 test ETH = 1000 credits</h3>
     </div>
   );
 }

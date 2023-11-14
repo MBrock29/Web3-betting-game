@@ -3,17 +3,12 @@ pragma solidity ^0.8.19;
 
 contract Game {
     uint256 balance;
-    uint256 betAmount;
     uint256 randomNumber;
     uint256 winnings;
     uint256 rand;
     uint256 public payoutAmount;
     uint256 depositAmount;
     bool win;
-    uint256 drawOdds;
-    uint256 drawPerc;
-    uint256 awayOdds;
-    uint256 awayPerc;
 
     struct Player {
         address walletAddress;
@@ -71,7 +66,8 @@ contract Game {
         rand = uint256(keccak256(abi.encodePacked(block.timestamp)));
         randomNumber = (rand % 100) + 1;
         if (randomNumber <= perc) {
-            winnings = amount * (odds - 1);
+            winnings = amount * odds;
+             
             players[msg.sender].balance = players[msg.sender].balance + winnings;
             win = true;
         } else {
@@ -84,7 +80,7 @@ contract Game {
         rand = uint256(keccak256(abi.encodePacked(block.timestamp)));
         randomNumber = (rand % 100) + 1;
         if (randomNumber <= perc) {
-            winnings = amount * (odds - 1);
+            winnings = amount * ((odds / 100) - 1);
             players[msg.sender].balance = players[msg.sender].balance + winnings;
             win = true;
         } else {
@@ -97,7 +93,7 @@ contract Game {
         rand = uint256(keccak256(abi.encodePacked(block.timestamp)));
         randomNumber = (rand % 100) + 1;
         if (randomNumber <= perc) {
-            winnings = amount * (odds - 1);
+            winnings = amount * ((odds / 100) - 1);
             players[msg.sender].balance = players[msg.sender].balance + winnings;
             win = true;
         } else {
