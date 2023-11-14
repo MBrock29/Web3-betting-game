@@ -18,6 +18,7 @@ function App() {
   const [result, setResult] = useState(null);
   const [depositAmount, setDepositAmount] = useState(0);
   const [withdrawalAmount, setWithdrawalAmount] = useState(0);
+  const weiConv = 1000000000000000000;
 
   const getProviderOrSigner = async (needSigner = false) => {
     if (web3ModalRef.current) {
@@ -96,7 +97,10 @@ function App() {
         abi,
         provider
       );
-      const transaction = await bettingGameContract.betHomeTeam(betAmount);
+
+      const transaction = await bettingGameContract.betHomeTeam(
+        (betAmount * weiConv).toString()
+      );
       setLoading(true);
       await transaction.wait();
       setResultIn(true);
@@ -176,9 +180,7 @@ function App() {
         abi,
         provider
       );
-      const withdrawAmount = (
-        withdrawalAmount * 1000000000000000000
-      ).toString();
+      const withdrawAmount = (withdrawalAmount * weiConv).toString();
       console.log(withdrawAmount);
       const transaction = await bettingGameContract.withdraw(withdrawAmount);
       setLoading(true);
@@ -231,7 +233,7 @@ function App() {
         withdraw={withdraw}
         withdrawalAllowed={withdrawalAllowed}
         address={account}
-        balance={balance / 1000000000000000000}
+        balance={balance / weiConv}
         setDepositAmount={setDepositAmount}
         setWithdrawalAmount={setWithdrawalAmount}
       />
