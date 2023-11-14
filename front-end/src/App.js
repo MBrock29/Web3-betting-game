@@ -172,8 +172,9 @@ function App() {
       const transaction = await bettingGameContract.betHomeTeam(
         ((betAmount * weiConv) / 10000).toString(),
         Math.round(odds * 100),
-        perc
+        99
       );
+      setTeamSelected("home");
       setLoading(true);
       await transaction.wait();
       setResultIn(true);
@@ -198,6 +199,7 @@ function App() {
         Math.round(odds * 100),
         99
       );
+      setTeamSelected("draw");
       setLoading(true);
       await transaction.wait();
       setResultIn(true);
@@ -223,6 +225,7 @@ function App() {
         Math.round(odds * 100),
         perc
       );
+      setTeamSelected("away");
       setLoading(true);
       await transaction.wait();
       setResultIn(true);
@@ -300,17 +303,16 @@ function App() {
       });
     }
   });
+
   const homeClicked = (x) => {
     setResultIn(false);
     betHomeTeam(x.homeOddsDec, x.homePerc);
-    setTeamSelected("home");
     setHomeTeamSelected(x.homeTeam);
     setAwayTeamSelected(x.awayTeam);
   };
   const drawClicked = (x) => {
     setResultIn(false);
     betDraw(x.drawOddsDec, x.drawPerc);
-    setTeamSelected("draw");
     setHomeTeamSelected(x.homeTeam);
     setAwayTeamSelected(x.awayTeam);
   };
@@ -318,7 +320,6 @@ function App() {
   const awayClicked = (x) => {
     setResultIn(false);
     betAwayTeam(x.awayOddsDec, x.awayPerc);
-    setTeamSelected("away");
     setHomeTeamSelected(x.homeTeam);
     setAwayTeamSelected(x.awayTeam);
   };
