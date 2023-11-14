@@ -31,13 +31,27 @@ function App() {
       homeOddsDec: 1.6,
       homePerc: 59,
       draw: "Draw",
-      drawOddsFrac: "12/5",
-      drawOddsDec: 3.4,
+      drawOddsFrac: "17/5",
+      drawOddsDec: 4.4,
       drawPerc: 21,
       awayTeam: "Liverpool",
-      awayOddsFrac: "13/5",
-      awayOddsDec: 3.6,
+      awayOddsFrac: "18/5",
+      awayOddsDec: 4.6,
       awayPerc: 20,
+    },
+    {
+      homeTeam: "Luton",
+      homeOddsFrac: "5/2",
+      homeOddsDec: 3.5,
+      homePerc: 27,
+      draw: "Draw",
+      drawOddsFrac: "10/3",
+      drawOddsDec: 3.33,
+      drawPerc: 28,
+      awayTeam: "Crystal Palace",
+      awayOddsFrac: "11/10",
+      awayOddsDec: 2.1,
+      awayPerc: 45,
     },
   ];
 
@@ -182,7 +196,7 @@ function App() {
       const transaction = await bettingGameContract.betDraw(
         ((betAmount * weiConv) / 10000).toString(),
         Math.round(odds * 100),
-        perc
+        99
       );
       setLoading(true);
       await transaction.wait();
