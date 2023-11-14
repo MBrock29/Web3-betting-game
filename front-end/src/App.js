@@ -4,6 +4,7 @@ import Web3Modal from "web3modal";
 import { BETTING_GAME_CONTRACT_ADDRESS, abi } from "./constants/index";
 import Header from "./components/header/Header";
 import { ethers } from "ethers";
+import "./index.css";
 
 function App() {
   const [balance, setBalance] = useState(0);
@@ -472,7 +473,7 @@ function App() {
       </div>
     );
   return (
-    <div>
+    <div className="bg-[#323546] text-white h-screen w-full flex flex-col">
       <Header
         deposit={deposit}
         withdraw={withdraw}

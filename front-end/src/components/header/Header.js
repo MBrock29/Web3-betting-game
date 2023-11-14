@@ -1,4 +1,6 @@
 import React from "react";
+import "../../index.css";
+import { useState } from "react";
 
 function Header({
   deposit,
@@ -8,34 +10,93 @@ function Header({
   setDepositAmount,
   setWithdrawalAmount,
 }) {
+  const [depositing, setDepositing] = useState(false);
+  const [withdrawing, setWithdrawing] = useState(false);
+
+  const depositFunction = () => {
+    setDepositing(true);
+    setWithdrawing(false);
+  };
+
+  const withdrawFunction = () => {
+    setWithdrawing(true);
+    setDepositing(false);
+  };
+
+  const submitDeposit = () => {
+    setDepositing(false);
+    deposit();
+  };
+
+  const submitWithdraw = () => {
+    setWithdrawing(false);
+    withdraw();
+  };
   return (
-    <div>
+    <div className="flex w-full justify-evenly my-5 text-xl font-bold">
       <div>
-        <div>
+        <div className="w-1/4">
           <p>Balance: {Math.round(balance, 0)}</p>
         </div>
       </div>{" "}
-      <div>
-        <button onClick={deposit}>Deposit</button>
-        <input
-          type="number"
-          placeholder="Enter deposit amount"
-          max={1}
-          onChange={(e) => setDepositAmount(e.target.value / 10000)}
-        />
+      <h3 className="w-1/4">0.1 test ETH = 1000 credits</h3>
+      <div className="flex flex-col w-1/4 items-center">
+        {depositing ? (
+          <>
+            {" "}
+            <button onClick={submitDeposit} className="pb-2">
+              Enter deposit amount (in credits)
+            </button>
+            <input
+              type="number"
+              placeholder="0"
+              max={1}
+              onChange={(e) => setDepositAmount(e.target.value / 10000)}
+              className="rounded-full text-center ml-2 bg-[#323546] border-2 text-white w-40 text-ms w-fit"
+            />
+            <div className="flex justify-evenly w-6/12">
+              <button className="w-6/12" onClick={() => setDepositing(false)}>
+                X
+              </button>
+              <button className="w-6/12" onClick={submitDeposit}>
+                Submit
+              </button>
+            </div>
+          </>
+        ) : (
+          <button onClick={depositFunction}>Deposit</button>
+        )}
       </div>
-      <div>
-        <button disabled={!withdrawalAllowed} onClick={withdraw}>
-          Withdraw
-        </button>
-        <input
-          type="number"
-          placeholder="Enter withdrawal amount"
-          max={balance}
-          onChange={(e) => setWithdrawalAmount(e.target.value)}
-        />
+      <div className="flex flex-col w-1/4 items-center">
+        {withdrawing ? (
+          <>
+            <button
+              disabled={!withdrawalAllowed}
+              onClick={submitWithdraw}
+              className="pb-2"
+            >
+              Withdraw
+            </button>
+            <input
+              type="number"
+              placeholder="0"
+              max={balance}
+              onChange={(e) => setWithdrawalAmount(e.target.value)}
+              className="rounded-full text-center ml-2 bg-[#323546] border-2 text-white w-40 text-ms w-fit"
+            />
+            <div className="flex justify-evenly w-6/12">
+              <button className="w-6/12" onClick={() => setWithdrawing(false)}>
+                X
+              </button>
+              <button className="w-6/12" onClick={submitWithdraw}>
+                Submit
+              </button>
+            </div>{" "}
+          </>
+        ) : (
+          <button onClick={withdrawFunction}>Withdraw</button>
+        )}
       </div>
-      <h3>0.1 test ETH = 1000 credits</h3>
     </div>
   );
 }
