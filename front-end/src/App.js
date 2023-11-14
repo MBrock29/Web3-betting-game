@@ -483,57 +483,78 @@ function App() {
         setDepositAmount={setDepositAmount}
         setWithdrawalAmount={setWithdrawalAmount}
       />
-      <div>
-        <div>
-          <h4>Stake an amount and choose who you think will win the match!</h4>
-          <h4>Minimum bet amount: 100</h4>
-          <h4>Maximum bet amount: 1000</h4>
-        </div>
-        <div>
+      <div className="flex w-9/12 justify-evenly mx-auto mt-5">
+        <div className="flex w-6/12 flex-col mr-5 items-center bg-[#222529] p-5 rounded-lg h-[60%]">
+          <h4 className="mb-8">
+            Stake an amount and choose who you think will win the match!
+          </h4>
+          <h4 className="mb-8">Minimum bet amount: 100</h4>
+          <h4 className="mb-8">Maximum bet amount: 1000</h4>
           <input
             type="number"
             placeholder="Enter bet amount"
+            className="flex text-center rounded-full text-black"
             max={balance}
             onChange={(e) => setBetAmount(e.target.value)}
           />
+          {resultIn && (
+            <div className="mt-8 text-2xl text-center">
+              <h1 className="mb-4">
+                Result is... <br />
+                <div className="mt-4">
+                  {homeTeamSelected} {displayResultOutcome} {awayTeamSelected}
+                </div>
+              </h1>
+              <h2>
+                {" "}
+                {result
+                  ? "Congratulations!"
+                  : "Unlucky, better luck next time!"}
+              </h2>
+            </div>
+          )}
+        </div>
+        <div className="flex w-6/12 flex-col ml-5 bg-[#222529] p-5 rounded-lg h-[60%] overflow-auto">
           {odds.map((x) => (
-            <>
-              <button onClick={() => homeClicked(x)} disabled={betDisabled}>
+            <div className="flex w-full">
+              <button
+                className="border-2 border-white rounded-full py-2 px-5 my-2 mx-2 w-4/12 hover:bg-white hover:text-black hover:cursor-pointer"
+                onClick={() => homeClicked(x)}
+                disabled={betDisabled}
+              >
                 <div>
-                  {x.homeTeam}
+                  {x.homeTeam} <br />
                   {x.homeOddsFrac}
                 </div>
               </button>
-              <button onClick={() => drawClicked(x)} disabled={betDisabled}>
+              <button
+                className="border-2 border-white rounded-full py-2 px-5 my-2 mx-2 w-4/12 hover:bg-white hover:text-black hover:cursor-pointer"
+                onClick={() => drawClicked(x)}
+                disabled={betDisabled}
+              >
                 <div>
                   {x.draw}
+                  <br />
                   {x.drawOddsFrac}
                 </div>
               </button>
-              <button onClick={() => awayClicked(x)} disabled={betDisabled}>
+              <button
+                className="border-2 border-white rounded-full py-2 px-5 my-2 mx-2 w-4/12 hover:bg-white hover:text-black hover:cursor-pointer"
+                onClick={() => awayClicked(x)}
+                disabled={betDisabled}
+              >
                 <div>
                   {x.awayTeam}
+                  <br />
                   {x.awayOddsFrac}
                 </div>
               </button>
-            </>
+            </div>
           ))}
         </div>
         <div>
           {/* {betDisabled && betInvalid ? <h3>Bet amount invalid</h3> : <h3></h3>} */}
         </div>
-        {resultIn && (
-          <div>
-            <h1>
-              Result is... <br />
-              {homeTeamSelected} {displayResultOutcome} {awayTeamSelected}
-            </h1>
-            <h2>
-              {" "}
-              {result ? "Congratulations!" : "Unlucky, better luck next time!"}
-            </h2>
-          </div>
-        )}
       </div>
       {/* {resultIn && (
         <div>
@@ -552,11 +573,11 @@ function App() {
           )}
         </div>
       )} */}
-      {wrongNetwork && (
+      {/* {wrongNetwork && (
         <div>
           <h1>Network error. Please connect to Rinkeby test network.</h1>
         </div>
-      )}
+      )} */}
     </div>
   );
 }
