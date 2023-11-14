@@ -17,6 +17,7 @@ function App() {
   const [wrongNetwork, setWrongNetwork] = useState(false);
   const [result, setResult] = useState(null);
   const [depositAmount, setDepositAmount] = useState(0);
+  const [withdrawalAmount, setWithdrawalAmount] = useState(0);
 
   const getProviderOrSigner = async (needSigner = false) => {
     if (web3ModalRef.current) {
@@ -155,8 +156,9 @@ function App() {
         abi,
         provider
       );
+      console.log(depositAmount);
       const transaction = await bettingGameContract.deposit({
-        value: ethers.parseUnits("0.01", "ether"),
+        value: ethers.parseUnits(depositAmount, "ether"),
       });
       setLoading(true);
       await transaction.wait();
@@ -174,9 +176,13 @@ function App() {
         abi,
         provider
       );
-      const withdrawAmount = balance.toString();
-      console.log(balance);
-      const transaction = await bettingGameContract.withdraw(withdrawAmount);
+      const withdrawAmount = (
+        withdrawalAmount * 1000000000000000000
+      ).toString();
+      console.log(withdrawAmount);
+      const transaction = await bettingGameContract.withdraw({
+        value: ethers.parseUnits(withdrawalAmount, "ether"),
+      });
 
       setLoading(true);
       await transaction.wait();
@@ -185,8 +191,6 @@ function App() {
       console.error(err);
     }
   };
-
-  console.log(betAmount);
 
   const betDisabled =
     parseInt(betAmount) > parseInt(balance) || betAmount < 0.01;
@@ -231,15 +235,12 @@ function App() {
         withdrawalAllowed={withdrawalAllowed}
         address={account}
         balance={balance / 1000000000000000000}
+        setDepositAmount={setDepositAmount}
+        setWithdrawalAmount={setWithdrawalAmount}
       />
       <div>
         <div>
-          <h3>
-            Stake an amount and choose whether you think the random number will
-            be high or low.
-            <br />
-            Double your stake if you win!
-          </h3>
+          <h3>Stake an amount and choose who you think will win the match!</h3>
         </div>
         <div>
           <input
