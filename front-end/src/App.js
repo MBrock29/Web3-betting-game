@@ -19,22 +19,20 @@ function App() {
   const [depositAmount, setDepositAmount] = useState(0);
   const [withdrawalAmount, setWithdrawalAmount] = useState(0);
   const weiConv = 1000000000000000000;
-  const [homeOdds, setHomeOdds] = useState(0);
-  const [homePerc, setHomePerc] = useState(0);
 
   const odds = [
     {
       homeTeam: "Man City",
       homeOddsFrac: "3/5",
-      homeOddsDec: "0.6",
+      homeOddsDec: 1.6,
       homePerc: 59,
       draw: "Draw",
       drawOddsFrac: "12/5",
-      drawOddsDec: "3.4",
+      drawOddsDec: 4.4,
       drawPerc: 21,
       awayTeam: "Liverpool",
       awayOddsFrac: "13/5",
-      awayOddsDec: "3.6",
+      awayOddsDec: 4.6,
       awayPerc: 20,
     },
   ];
@@ -116,7 +114,6 @@ function App() {
         abi,
         provider
       );
-      console.log(odds, perc);
       const transaction = await bettingGameContract.betHomeTeam(
         (betAmount * weiConv).toString(),
         odds,
@@ -133,7 +130,7 @@ function App() {
     }
   };
 
-  const betDraw = async () => {
+  const betDraw = async (odds, perc) => {
     try {
       const provider = await getProviderOrSigner(true);
       const bettingGameContract = new ethers.Contract(
@@ -141,7 +138,11 @@ function App() {
         abi,
         provider
       );
-      const transaction = await bettingGameContract.betLow(betAmount);
+      const transaction = await bettingGameContract.betDraw(
+        (betAmount * weiConv).toString(),
+        odds,
+        perc
+      );
       setLoading(true);
       await transaction.wait();
       setResultIn(true);
@@ -153,7 +154,7 @@ function App() {
     }
   };
 
-  const betAwayTeam = async () => {
+  const betAwayTeam = async (odds, perc) => {
     try {
       const provider = await getProviderOrSigner(true);
       const bettingGameContract = new ethers.Contract(
@@ -161,7 +162,11 @@ function App() {
         abi,
         provider
       );
-      const transaction = await bettingGameContract.betLow(betAmount);
+      const transaction = await bettingGameContract.betAwayTeam(
+        (betAmount * weiConv).toString(),
+        odds,
+        perc
+      );
       setLoading(true);
       await transaction.wait();
       setResultIn(true);
@@ -280,13 +285,19 @@ function App() {
                   {x.homeOddsFrac}
                 </div>
               </button>
-              <button onClick={betDraw} disabled={betDisabled}>
+              <button
+                onClick={() => betDraw(x.drawOddsDecDec, x.drawPerc)}
+                disabled={betDisabled}
+              >
                 <div>
                   {x.draw}
                   {x.drawOddsFrac}
                 </div>
               </button>
-              <button onClick={betAwayTeam} disabled={betDisabled}>
+              <button
+                onClick={() => betAwayTeam(x.awayOddsDec, x.awayPerc)}
+                disabled={betDisabled}
+              >
                 <div>
                   {x.awayTeam}
                   {x.awayOddsFrac}

@@ -87,6 +87,16 @@ export const abi = [
         name: "amount",
         type: "uint256",
       },
+      {
+        internalType: "uint256",
+        name: "homeOdds",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "homePerc",
+        type: "uint256",
+      },
     ],
     name: "betHomeTeam",
     outputs: [],
@@ -109,6 +119,19 @@ export const abi = [
       },
     ],
     name: "getBalance",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getContractBalance",
     outputs: [
       {
         internalType: "uint256",
@@ -147,7 +170,7 @@ export const abi = [
             type: "bool",
           },
         ],
-        internalType: "struct BettingGame.Player",
+        internalType: "struct Game.Player",
         name: "",
         type: "tuple",
       },

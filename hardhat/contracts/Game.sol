@@ -67,43 +67,41 @@ contract Game {
         return players[addr];
     }
 
-    function betHomeTeam(uint256 amount, uint256 homeOdds, uint256 homePerc) public { 
+    function betHomeTeam(uint256 amount, uint256 odds, uint256 perc) public { 
         rand = uint256(keccak256(abi.encodePacked(block.timestamp)));
         randomNumber = (rand % 100) + 1;
-        if (randomNumber <= homePerc) {
-            winnings = amount * homeOdds;
+        if (randomNumber <= perc) {
+            winnings = amount * (odds - 1);
             players[msg.sender].balance = players[msg.sender].balance + winnings;
             win = true;
         } else {
-            players[msg.sender].balance = players[msg.sender].balance - betAmount;
+            players[msg.sender].balance = players[msg.sender].balance - amount;
             win = false;
         }
     }
 
-    function betDraw(uint256 amount) public { 
-        betAmount = amount;
+    function betDraw(uint256 amount, uint256 odds, uint256 perc) public { 
         rand = uint256(keccak256(abi.encodePacked(block.timestamp)));
         randomNumber = (rand % 100) + 1;
-        if (randomNumber < 67 && randomNumber > 33) {
-            winnings = betAmount;
+        if (randomNumber <= perc) {
+            winnings = amount * (odds - 1);
             players[msg.sender].balance = players[msg.sender].balance + winnings;
             win = true;
         } else {
-            players[msg.sender].balance = players[msg.sender].balance - betAmount;
+            players[msg.sender].balance = players[msg.sender].balance - amount;
             win = false;
         }
     }
 
-    function betAwayTeam(uint256 amount) public { 
-        betAmount = amount;
+    function betAwayTeam(uint256 amount, uint256 odds, uint256 perc) public { 
         rand = uint256(keccak256(abi.encodePacked(block.timestamp)));
         randomNumber = (rand % 100) + 1;
-        if (randomNumber > 67) {
-            winnings = betAmount;
+        if (randomNumber <= perc) {
+            winnings = amount * (odds - 1);
             players[msg.sender].balance = players[msg.sender].balance + winnings;
             win = true;
         } else {
-            players[msg.sender].balance = players[msg.sender].balance - betAmount;
+            players[msg.sender].balance = players[msg.sender].balance - amount;
             win = false;
         }
     }
