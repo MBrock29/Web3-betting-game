@@ -10,8 +10,6 @@ contract Game {
     uint256 public payoutAmount;
     uint256 depositAmount;
     bool win;
-    uint256 homeOdds;
-    uint256 homePerc;
     uint256 drawOdds;
     uint256 drawPerc;
     uint256 awayOdds;
@@ -69,12 +67,11 @@ contract Game {
         return players[addr];
     }
 
-    function betHomeTeam(uint256 amount) public { 
-        betAmount = amount;
+    function betHomeTeam(uint256 amount, uint256 homeOdds, uint256 homePerc) public { 
         rand = uint256(keccak256(abi.encodePacked(block.timestamp)));
         randomNumber = (rand % 100) + 1;
-        if (randomNumber < 34) {
-            winnings = betAmount * homeOdds;
+        if (randomNumber <= homePerc) {
+            winnings = amount * homeOdds;
             players[msg.sender].balance = players[msg.sender].balance + winnings;
             win = true;
         } else {

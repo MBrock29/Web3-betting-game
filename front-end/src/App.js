@@ -19,6 +19,8 @@ function App() {
   const [depositAmount, setDepositAmount] = useState(0);
   const [withdrawalAmount, setWithdrawalAmount] = useState(0);
   const weiConv = 1000000000000000000;
+  const [homeOdds, setHomeOdds] = useState(0);
+  const [homePerc, setHomePerc] = useState(0);
 
   const odds = [
     {
@@ -106,7 +108,7 @@ function App() {
     }
   };
 
-  const betHomeTeam = async () => {
+  const betHomeTeam = async (odds, perc) => {
     try {
       const provider = await getProviderOrSigner(true);
       const bettingGameContract = new ethers.Contract(
@@ -114,9 +116,11 @@ function App() {
         abi,
         provider
       );
-
+      console.log(odds, perc);
       const transaction = await bettingGameContract.betHomeTeam(
-        (betAmount * weiConv).toString()
+        (betAmount * weiConv).toString(),
+        odds,
+        perc
       );
       setLoading(true);
       await transaction.wait();
@@ -265,15 +269,31 @@ function App() {
             max={balance}
             onChange={(e) => setBetAmount(e.target.value)}
           />
-          <button onClick={betHomeTeam} disabled={betDisabled}>
-            Bet home team
-          </button>
-          <button onClick={betDraw} disabled={betDisabled}>
-            Bet draw
-          </button>
-          <button onClick={betAwayTeam} disabled={betDisabled}>
-            Bet away team
-          </button>
+          {odds.map((x) => (
+            <>
+              <button
+                onClick={() => betHomeTeam(x.homeOddsDec, x.homePerc)}
+                disabled={betDisabled}
+              >
+                <div>
+                  {x.homeTeam}
+                  {x.homeOddsFrac}
+                </div>
+              </button>
+              <button onClick={betDraw} disabled={betDisabled}>
+                <div>
+                  {x.draw}
+                  {x.drawOddsFrac}
+                </div>
+              </button>
+              <button onClick={betAwayTeam} disabled={betDisabled}>
+                <div>
+                  {x.awayTeam}
+                  {x.awayOddsFrac}
+                </div>
+              </button>
+            </>
+          ))}
         </div>
         <div>
           {betDisabled && !betInvalid ? <h3>Bet amount invalid</h3> : <h3></h3>}
