@@ -174,7 +174,8 @@ function App() {
         abi,
         provider
       );
-      const withdrawAmount = (balance * 100000000000000).toString();
+      const withdrawAmount = balance.toString();
+      console.log(balance);
       const transaction = await bettingGameContract.withdraw(withdrawAmount);
 
       setLoading(true);
