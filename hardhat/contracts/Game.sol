@@ -33,7 +33,8 @@ contract Game {
     }
 
     function deposit() public payable {
-        players[msg.sender].balance = players[msg.sender].balance + depositAmount;
+        require(msg.value > 0, "Deposit amount must be greater than 0");
+        players[msg.sender].balance += msg.value;
         emit Deposit(
             msg.sender,
             msg.value,
@@ -48,8 +49,9 @@ contract Game {
     );
 
     function withdraw(uint256 balanceAmount) public payable {
+        require(amount <= players[msg.sender].balance, "Insufficient balance");
         payable(msg.sender).transfer(balanceAmount);
-        players[msg.sender].balance = 0;
+        players[msg.sender].balance -= balanceAmount;
         emit Withdraw(
             msg.sender,
             balanceAmount,
