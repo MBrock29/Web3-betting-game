@@ -11,8 +11,11 @@ contract Game {
     uint256 depositAmount;
     bool win;
     uint256 homeOdds;
+    uint256 homePerc;
     uint256 drawOdds;
+    uint256 drawPerc;
     uint256 awayOdds;
+    uint256 awayPerc;
 
     struct Player {
         address walletAddress;

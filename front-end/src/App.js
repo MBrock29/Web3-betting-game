@@ -20,6 +20,23 @@ function App() {
   const [withdrawalAmount, setWithdrawalAmount] = useState(0);
   const weiConv = 1000000000000000000;
 
+  const odds = [
+    {
+      homeTeam: "Man City",
+      homeOddsFrac: "3/5",
+      homeOddsDec: "0.6",
+      homePerc: 59,
+      draw: "Draw",
+      drawOddsFrac: "12/5",
+      drawOddsDec: "3.4",
+      drawPerc: 21,
+      awayTeam: "Liverpool",
+      awayOddsFrac: "13/5",
+      awayOddsDec: "3.6",
+      awayPerc: 20,
+    },
+  ];
+
   const getProviderOrSigner = async (needSigner = false) => {
     if (web3ModalRef.current) {
       const provider = await web3ModalRef.current.connect();
