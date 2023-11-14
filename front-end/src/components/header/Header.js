@@ -12,7 +12,7 @@ function Header({
     <div>
       <div>
         <div>
-          <p>Balance: {balance}</p>
+          <p>Balance: {Math.round(balance, 0)}</p>
         </div>
       </div>{" "}
       <div>

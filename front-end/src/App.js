@@ -19,6 +19,10 @@ function App() {
   const [depositAmount, setDepositAmount] = useState(0);
   const [withdrawalAmount, setWithdrawalAmount] = useState(0);
   const weiConv = 1000000000000000000;
+  const [teamSelected, setTeamSelected] = useState("");
+  const [homeTeamSelected, setHomeTeamSelected] = useState("");
+  const [awayTeamSelected, setAwayTeamSelected] = useState("");
+  const [displayResultOutcome, setDisplayResultOutcome] = useState("");
 
   const odds = [
     {
@@ -178,7 +182,7 @@ function App() {
       const transaction = await bettingGameContract.betDraw(
         ((betAmount * weiConv) / 10000).toString(),
         Math.round(odds * 100),
-        99
+        perc
       );
       setLoading(true);
       await transaction.wait();
@@ -203,7 +207,7 @@ function App() {
       const transaction = await bettingGameContract.betAwayTeam(
         ((betAmount * weiConv) / 10000).toString(),
         Math.round(odds * 100),
-        99
+        perc
       );
       setLoading(true);
       await transaction.wait();
@@ -282,6 +286,57 @@ function App() {
       });
     }
   });
+  const homeClicked = (x) => {
+    setResultIn(false);
+    betHomeTeam(x.homeOddsDec, x.homePerc);
+    setTeamSelected("home");
+    setHomeTeamSelected(x.homeTeam);
+    setAwayTeamSelected(x.awayTeam);
+  };
+  const drawClicked = (x) => {
+    setResultIn(false);
+    betDraw(x.drawOddsDec, x.drawPerc);
+    setTeamSelected("draw");
+    setHomeTeamSelected(x.homeTeam);
+    setAwayTeamSelected(x.awayTeam);
+  };
+
+  const awayClicked = (x) => {
+    setResultIn(false);
+    betAwayTeam(x.awayOddsDec, x.awayPerc);
+    setTeamSelected("away");
+    setHomeTeamSelected(x.homeTeam);
+    setAwayTeamSelected(x.awayTeam);
+  };
+
+  const getRandomElement = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+  useEffect(() => {
+    const displayResult = () => {
+      if (result) {
+        switch (teamSelected) {
+          case "home":
+            return <span>{getRandomElement(homeWin)}</span>;
+          case "draw":
+            return <span>{getRandomElement(draw)}</span>;
+          case "away":
+            return <span>{getRandomElement(awayWin)}</span>;
+          default:
+            return null;
+        }
+      } else {
+        let otherOptions = [];
+        if (teamSelected !== "home")
+          otherOptions = otherOptions.concat(homeWin);
+        if (teamSelected !== "draw") otherOptions = otherOptions.concat(draw);
+        if (teamSelected !== "away")
+          otherOptions = otherOptions.concat(awayWin);
+        return <span>{getRandomElement(otherOptions)}</span>;
+      }
+    };
+
+    setDisplayResultOutcome(displayResult());
+  }, [resultIn]);
 
   if (loading)
     return (
@@ -315,28 +370,19 @@ function App() {
           />
           {odds.map((x) => (
             <>
-              <button
-                onClick={() => betHomeTeam(x.homeOddsDec, x.homePerc)}
-                disabled={betDisabled}
-              >
+              <button onClick={() => homeClicked(x)} disabled={betDisabled}>
                 <div>
                   {x.homeTeam}
                   {x.homeOddsFrac}
                 </div>
               </button>
-              <button
-                onClick={() => betDraw(x.drawOddsDec, x.drawPerc)}
-                disabled={betDisabled}
-              >
+              <button onClick={() => drawClicked(x)} disabled={betDisabled}>
                 <div>
                   {x.draw}
                   {x.drawOddsFrac}
                 </div>
               </button>
-              <button
-                onClick={() => betAwayTeam(x.awayOddsDec, x.awayPerc)}
-                disabled={betDisabled}
-              >
+              <button onClick={() => awayClicked(x)} disabled={betDisabled}>
                 <div>
                   {x.awayTeam}
                   {x.awayOddsFrac}
@@ -346,14 +392,18 @@ function App() {
           ))}
         </div>
         <div>
-          {betDisabled && betInvalid ? <h3>Bet amount invalid</h3> : <h3></h3>}
+          {/* {betDisabled && betInvalid ? <h3>Bet amount invalid</h3> : <h3></h3>} */}
         </div>
         {resultIn && (
           <div>
             <h1>
               Result is... <br />
-              <span style={{ fontSize: 72 }}>{result}</span>
+              {homeTeamSelected} {displayResultOutcome} {awayTeamSelected}
             </h1>
+            <h2>
+              {" "}
+              {result ? "Congratulations!" : "Unlucky, better luck next time!"}
+            </h2>
           </div>
         )}
       </div>
