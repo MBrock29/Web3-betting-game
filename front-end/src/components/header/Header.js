@@ -1,6 +1,8 @@
 import React from "react";
 import "../../index.css";
 import { useState } from "react";
+import { MdOutlineCancel } from "react-icons/md";
+import { TiTickOutline } from "react-icons/ti";
 
 function Header({
   deposit,
@@ -33,7 +35,7 @@ function Header({
     withdraw();
   };
   return (
-    <div className="flex w-full my-5 text-xl font-bold min-h-[10%] text-center">
+    <div className="flex w-full my-5 text-xl font-bold min-h-[100px] text-center">
       <div className="w-1/4 ml-5 text-center">
         <div>
           <p>Balance: {Math.round(balance, 0)}</p>
@@ -47,21 +49,28 @@ function Header({
             <button onClick={submitDeposit} className="pb-2">
               Enter amount (in credits)
             </button>
-            <input
-              type="number"
-              placeholder="0"
-              max={1}
-              onChange={(e) => setDepositAmount(e.target.value / 10000)}
-              className="rounded-full text-center pl-2 border-2 border-[#323546] text-black w-[50%] text-md flex justify-center"
-            />
-            <div className="flex justify-evenly w-6/12">
-              <button className="w-6/12" onClick={() => setDepositing(false)}>
-                X
+            <div className="flex justify-center">
+              <button
+                className=" flex justify-center w-[40px] my-auto"
+                onClick={() => setDepositing(false)}
+              >
+                <MdOutlineCancel size="25px" />
               </button>
-              <button className="w-6/12" onClick={submitDeposit}>
-                Submit
+              <input
+                type="number"
+                placeholder="0"
+                max={1}
+                onChange={(e) => setDepositAmount(e.target.value / 10000)}
+                className="rounded-full text-center pl-2 border-2 border-[#323546] text-black w-[50%] text-md flex justify-center"
+              />{" "}
+              <button
+                className=" flex justify-center w-[40px] my-auto"
+                onClick={submitDeposit}
+              >
+                <TiTickOutline size="28px" />
               </button>
             </div>
+            <div className="flex justify-evenly w-6/12"></div>
           </>
         ) : (
           <button onClick={depositFunction}>Deposit</button>
@@ -77,21 +86,29 @@ function Header({
             >
               Withdraw
             </button>
-            <input
-              type="number"
-              placeholder="0"
-              max={balance}
-              onChange={(e) => setWithdrawalAmount(e.target.value)}
-              className="rounded-full text-center pl-2 border-2 border-[#323546] text-black w-[50%] text-md flex justify-center"
-            />
-            <div className="flex justify-evenly w-6/12">
-              <button className="w-6/12" onClick={() => setWithdrawing(false)}>
-                X
+            <div className="flex justify-center">
+              <button
+                className=" flex justify-center w-[40px] my-auto"
+                onClick={() => setWithdrawing(false)}
+              >
+                <MdOutlineCancel size="25px" />
               </button>
-              <button className="w-6/12" onClick={submitWithdraw}>
-                Submit
+
+              <input
+                type="number"
+                placeholder="0"
+                max={balance}
+                onChange={(e) => setWithdrawalAmount(e.target.value)}
+                className="rounded-full text-center pl-2 border-2 border-[#323546] text-black w-[50%] text-md flex justify-center"
+              />
+              <button
+                className=" flex justify-center w-[40px] my-auto"
+                onClick={submitWithdraw}
+              >
+                <TiTickOutline size="28px" />
               </button>
-            </div>{" "}
+            </div>
+            <div className="flex justify-evenly w-6/12"></div>{" "}
           </>
         ) : (
           <button onClick={withdrawFunction}>Withdraw</button>
