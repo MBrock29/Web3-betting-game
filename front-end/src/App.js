@@ -5,6 +5,7 @@ import { BETTING_GAME_CONTRACT_ADDRESS, abi } from "./constants/index";
 import Header from "./components/header/Header";
 import { ethers } from "ethers";
 import "./index.css";
+import { odds, homeWin, awayWin, draw } from "./components/header/Odds";
 
 function App() {
   const [balance, setBalance] = useState(0);
@@ -24,185 +25,9 @@ function App() {
   const [homeTeamSelected, setHomeTeamSelected] = useState("");
   const [awayTeamSelected, setAwayTeamSelected] = useState("");
   const [displayResultOutcome, setDisplayResultOutcome] = useState("");
+  const [yourSelection, setYourSelection] = useState("");
 
-  const odds = [
-    {
-      homeTeam: "Man City",
-      homeOddsFrac: "3/5",
-      homeOddsDec: 1.6,
-      homePerc: 59,
-      draw: "Draw",
-      drawOddsFrac: "17/5",
-      drawOddsDec: 4.4,
-      drawPerc: 21,
-      awayTeam: "Liverpool",
-      awayOddsFrac: "18/5",
-      awayOddsDec: 4.6,
-      awayPerc: 20,
-    },
-    {
-      homeTeam: "Luton",
-      homeOddsFrac: "5/2",
-      homeOddsDec: 3.5,
-      homePerc: 27,
-      draw: "Draw",
-      drawOddsFrac: "23/10",
-      drawOddsDec: 3.3,
-      drawPerc: 28,
-      awayTeam: "Palace",
-      awayOddsFrac: "11/10",
-      awayOddsDec: 2.1,
-      awayPerc: 45,
-    },
-    {
-      homeTeam: "N Forest",
-      homeOddsFrac: "2/1",
-      homeOddsDec: 3,
-      homePerc: 29,
-      draw: "Draw",
-      drawOddsFrac: "8/5",
-      drawOddsDec: 2.6,
-      drawPerc: 33,
-      awayTeam: "Brighton",
-      awayOddsFrac: "6/5",
-      awayOddsDec: 2.2,
-      awayPerc: 39,
-    },
-    {
-      homeTeam: "Burnley",
-      homeOddsFrac: "5/2",
-      homeOddsDec: 3.5,
-      homePerc: 26,
-      draw: "Draw",
-      drawOddsFrac: "5/2",
-      drawOddsDec: 3.5,
-      drawPerc: 26,
-      awayTeam: "West Ham",
-      awayOddsFrac: "19/20",
-      awayOddsDec: 1.95,
-      awayPerc: 47,
-    },
-    {
-      homeTeam: "Newcastle",
-      homeOddsFrac: "7/5",
-      homeOddsDec: 2.4,
-      homePerc: 39,
-      draw: "Draw",
-      drawOddsFrac: "12/5",
-      drawOddsDec: 3.4,
-      drawPerc: 27,
-      awayTeam: "Chelsea",
-      awayOddsFrac: "17/10",
-      awayOddsDec: 2.7,
-      awayPerc: 34,
-    },
-    {
-      homeTeam: "Sheff Utd",
-      homeOddsFrac: "23/10",
-      homeOddsDec: 3.3,
-      homePerc: 28,
-      draw: "Draw",
-      drawOddsFrac: "12/5",
-      drawOddsDec: 3.4,
-      drawPerc: 28,
-      awayTeam: "Bournemouth",
-      awayOddsFrac: "23/20",
-      awayOddsDec: 2.15,
-      awayPerc: 44,
-    },
-    {
-      homeTeam: "Brentford",
-      homeOddsFrac: "33/10",
-      homeOddsDec: 4.3,
-      homePerc: 22,
-      draw: "Draw",
-      drawOddsFrac: "27/10",
-      drawOddsDec: 3.7,
-      drawPerc: 25,
-      awayTeam: "Arsenal",
-      awayOddsFrac: "3/4",
-      awayOddsDec: 1.75,
-      awayPerc: 53,
-    },
-    {
-      homeTeam: "Tottenham",
-      homeOddsFrac: "5/4",
-      homeOddsDec: 2.25,
-      homePerc: 42,
-      draw: "Draw",
-      drawOddsFrac: "29/10",
-      drawOddsDec: 3.9,
-      drawPerc: 24,
-      awayTeam: "Aston Villa",
-      awayOddsFrac: "7/4",
-      awayOddsDec: 2.75,
-      awayPerc: 34,
-    },
-    {
-      homeTeam: "Everton",
-      homeOddsFrac: "7/4",
-      homeOddsDec: 2.75,
-      homePerc: 34,
-      draw: "Draw",
-      drawOddsFrac: "12/5",
-      drawOddsDec: 3.4,
-      drawPerc: 27,
-      awayTeam: "Man Utd",
-      awayOddsFrac: "7/5",
-      awayOddsDec: 2.4,
-      awayPerc: 39,
-    },
-    {
-      homeTeam: "Fulham",
-      homeOddsFrac: "5/4",
-      homeOddsDec: 2.25,
-      homePerc: 42,
-      draw: "Draw",
-      drawOddsFrac: "23/10",
-      drawOddsDec: 3.3,
-      drawPerc: 29,
-      awayTeam: "Wolverhampton",
-      awayOddsFrac: "11/5",
-      awayOddsDec: 3.2,
-      awayPerc: 29,
-    },
-  ];
-
-  const homeWin = [
-    "1-0",
-    "2-0",
-    "3-0",
-    "4-0",
-    "5-0",
-    "5-1",
-    "5-2",
-    "5-3",
-    "5-4",
-    "4-1",
-    "4-2",
-    "4-3",
-    "3-2",
-    "3-1",
-    "2-1",
-  ];
-  const draw = ["0-0", "1-1", "2-2", "3-3", "4-4"];
-  const awayWin = [
-    "0-1",
-    "0-2",
-    "0-3",
-    "0-4",
-    "0-5",
-    "1-5",
-    "2-5",
-    "3-5",
-    "4-5",
-    "1-4",
-    "2-4",
-    "3-4",
-    "2-3",
-    "1-3",
-    "1-2",
-  ];
+  console.log(yourSelection, "your selection", result, "result", randomNumber);
 
   const getProviderOrSigner = async (needSigner = false) => {
     if (web3ModalRef.current) {
@@ -268,7 +93,6 @@ function App() {
       setRandomNumber(ethers.formatUnits(rand, 0));
       const outcome = await bettingGameContract.getResult();
       setResult(outcome);
-      console.log(outcome);
     } catch (err) {
       console.error(err);
     }
@@ -282,7 +106,7 @@ function App() {
         abi,
         provider
       );
-      console.log((betAmount * weiConv) / 10000);
+
       const transaction = await bettingGameContract.betHomeTeam(
         ((betAmount * weiConv) / 10000).toString(),
         Math.round(odds * 100),
@@ -291,8 +115,8 @@ function App() {
       setTeamSelected("home");
       setLoading(true);
       await transaction.wait();
-      setResultIn(true);
       await getRandomNumber();
+      await setResultIn(true);
       await getBalance(account);
     } catch (err) {
       console.error(err);
@@ -316,8 +140,8 @@ function App() {
       setTeamSelected("draw");
       setLoading(true);
       await transaction.wait();
-      setResultIn(true);
       await getRandomNumber();
+      await setResultIn(true);
       await getBalance(account);
     } catch (err) {
       console.error(err);
@@ -342,8 +166,8 @@ function App() {
       setTeamSelected("away");
       setLoading(true);
       await transaction.wait();
-      setResultIn(true);
       await getRandomNumber();
+      await setResultIn(true);
       await getBalance(account);
     } catch (err) {
       console.error(err);
@@ -359,7 +183,6 @@ function App() {
         abi,
         provider
       );
-      console.log(depositAmount);
       const transaction = await bettingGameContract.deposit({
         value: ethers.parseUnits(depositAmount.toString(), "ether"),
       });
@@ -380,7 +203,6 @@ function App() {
         provider
       );
       const withdrawAmount = ((withdrawalAmount * weiConv) / 10000).toString();
-      console.log(withdrawAmount);
       const transaction = await bettingGameContract.withdraw(withdrawAmount);
       setLoading(true);
       await transaction.wait();
@@ -424,12 +246,14 @@ function App() {
     betHomeTeam(x.homeOddsDec, x.homePerc);
     setHomeTeamSelected(x.homeTeam);
     setAwayTeamSelected(x.awayTeam);
+    setYourSelection(x.homeTeam);
   };
   const drawClicked = (x) => {
     setResultIn(false);
     betDraw(x.drawOddsDec, x.drawPerc);
     setHomeTeamSelected(x.homeTeam);
     setAwayTeamSelected(x.awayTeam);
+    setYourSelection("Draw");
   };
 
   const awayClicked = (x) => {
@@ -437,12 +261,14 @@ function App() {
     betAwayTeam(x.awayOddsDec, x.awayPerc);
     setHomeTeamSelected(x.homeTeam);
     setAwayTeamSelected(x.awayTeam);
+    setYourSelection(x.awayTeam);
   };
 
   const getRandomElement = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
   useEffect(() => {
     setLoading(false);
+    setBetAmount("");
     const displayResult = () => {
       if (result) {
         switch (teamSelected) {
@@ -470,7 +296,7 @@ function App() {
   }, [resultIn]);
 
   return (
-    <div className="bg-[#323546] text-white h-screen w-full flex flex-col">
+    <div className="bg-[#1A202C] text-white h-screen w-full flex flex-col">
       <Header
         deposit={deposit}
         withdraw={withdraw}
@@ -481,30 +307,37 @@ function App() {
         setWithdrawalAmount={setWithdrawalAmount}
       />
       <div className="flex w-9/12 justify-evenly mx-auto mt-5">
-        <div className="flex w-6/12 flex-col mr-5 items-center bg-[#222529] p-5 rounded-lg h-[60%] text-center">
-          <h4 className="mb-8">
-            Stake an amount and choose who you think will win the match!
-          </h4>
-          <h4 className="mb-8">Minimum bet amount: 100</h4>
-          <h4 className="mb-8">Maximum bet amount: 1000</h4>
+        <div className="flex w-4/12 flex-col mr-5 items-center bg-[#4A5568] p-5 rounded-lg h-[70%] text-center">
+          <h4 className="mb-6">Stake an amount and select a result!</h4>
+          <h4 className="mb-6">Minimum bet amount: 100</h4>
+          <h4 className="mb-6">Maximum bet amount: 1000</h4>
           <input
             type="number"
             placeholder="Enter bet amount"
             className="flex text-center rounded-full text-black"
             max={balance}
+            value={betAmount}
             onChange={(e) => setBetAmount(e.target.value)}
           />
           {loading && (
             <div className="mt-8 text-2xl text-center">Loading...</div>
           )}
+          <div>
+            {/* {betDisabled && (
+              <h3 className="mt-8 text-2xl text-center">
+                Please enter a valid bet amount
+              </h3>
+            )} */}
+          </div>
           {resultIn && (
-            <div className="mt-8 text-2xl text-center">
-              <h1 className="mb-4">
+            <div className="mt-6 text-2xl text-center">
+              <h2 className="mb-4">Your selection is {yourSelection}</h2>
+              <h2 className="mb-4">
                 Result is... <br />
                 <div className="mt-4">
                   {homeTeamSelected} {displayResultOutcome} {awayTeamSelected}
                 </div>
-              </h1>
+              </h2>
               <h2>
                 {" "}
                 {result
@@ -514,46 +347,41 @@ function App() {
             </div>
           )}
         </div>
-        <div className="flex w-6/12 flex-col ml-5 bg-[#222529] p-5 rounded-lg h-[60%] overflow-auto">
+        <div className="flex w-8/12 flex-col ml-5 bg-[#4A5568] p-5 rounded-lg h-full overflow-auto">
           {odds.map((x) => (
             <div className="flex w-full">
               <button
-                className="border-2 border-white rounded-full py-2 px-5 my-2 mx-2 w-4/12 hover:bg-white hover:text-black hover:cursor-pointer disabled:opacity-40"
+                className="border-2 border-white rounded-full text-sm font-bold py-2 px-5 my-2 mx-2 w-4/12 hover:bg-white hover:text-black hover:cursor-pointer disabled:opacity-40"
                 onClick={() => homeClicked(x)}
                 disabled={betDisabled}
               >
                 <div>
-                  {x.homeTeam} <br />
+                  {x.homeTeam} &nbsp;
                   {x.homeOddsFrac}
                 </div>
               </button>
               <button
-                className="border-2 border-white rounded-full py-2 px-5 my-2 mx-2 w-4/12 hover:bg-white hover:text-black hover:cursor-pointer disabled:opacity-40"
+                className="border-2 border-white rounded-full text-sm font-bold py-2 px-5 my-2 mx-2 w-4/12 hover:bg-white hover:text-black hover:cursor-pointer disabled:opacity-40"
                 onClick={() => drawClicked(x)}
                 disabled={betDisabled}
               >
                 <div>
-                  {x.draw}
-                  <br />
+                  {x.draw}&nbsp;
                   {x.drawOddsFrac}
                 </div>
               </button>
               <button
-                className="border-2 border-white rounded-full py-2 px-5 my-2 mx-2 w-4/12 hover:bg-white hover:text-black hover:cursor-pointer disabled:opacity-40"
+                className="border-2 border-white rounded-full text-sm font-bold py-2 px-5 my-2 mx-2 w-4/12 hover:bg-white hover:text-black hover:cursor-pointer disabled:opacity-40"
                 onClick={() => awayClicked(x)}
                 disabled={betDisabled}
               >
                 <div>
-                  {x.awayTeam}
-                  <br />
+                  {x.awayTeam}&nbsp;
                   {x.awayOddsFrac}
                 </div>
               </button>
             </div>
           ))}
-        </div>
-        <div>
-          {/* {betDisabled && betInvalid ? <h3>Bet amount invalid</h3> : <h3></h3>} */}
         </div>
       </div>
       {/* {resultIn && (
