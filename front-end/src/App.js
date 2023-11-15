@@ -248,6 +248,7 @@ function App() {
         ethers.formatUnits(await bettingGameContract.getBalance(id), 0)
       );
       setLoading(false);
+      setBetAmount(0);
     } catch (err) {
       console.error(err);
       setLoading(false);
@@ -285,7 +286,7 @@ function App() {
       const transaction = await bettingGameContract.betHomeTeam(
         ((betAmount * weiConv) / 10000).toString(),
         Math.round(odds * 100),
-        99
+        perc
       );
       setTeamSelected("home");
       setLoading(true);
@@ -310,7 +311,7 @@ function App() {
       const transaction = await bettingGameContract.betDraw(
         ((betAmount * weiConv) / 10000).toString(),
         Math.round(odds * 100),
-        99
+        perc
       );
       setTeamSelected("draw");
       setLoading(true);
@@ -389,7 +390,8 @@ function App() {
     }
   };
 
-  const betDisabled = betAmount < 100;
+  const betDisabled =
+    betAmount < 100 || betAmount > 1000 || betAmount > balance;
 
   const betInvalid = betAmount < 100;
 
@@ -440,6 +442,7 @@ function App() {
   const getRandomElement = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
   useEffect(() => {
+    setLoading(false);
     const displayResult = () => {
       if (result) {
         switch (teamSelected) {
@@ -466,12 +469,6 @@ function App() {
     setDisplayResultOutcome(displayResult());
   }, [resultIn]);
 
-  if (loading)
-    return (
-      <div>
-        <h2>Loading...</h2>
-      </div>
-    );
   return (
     <div className="bg-[#323546] text-white h-screen w-full flex flex-col">
       <Header
@@ -484,7 +481,7 @@ function App() {
         setWithdrawalAmount={setWithdrawalAmount}
       />
       <div className="flex w-9/12 justify-evenly mx-auto mt-5">
-        <div className="flex w-6/12 flex-col mr-5 items-center bg-[#222529] p-5 rounded-lg h-[60%]">
+        <div className="flex w-6/12 flex-col mr-5 items-center bg-[#222529] p-5 rounded-lg h-[60%] text-center">
           <h4 className="mb-8">
             Stake an amount and choose who you think will win the match!
           </h4>
@@ -497,6 +494,9 @@ function App() {
             max={balance}
             onChange={(e) => setBetAmount(e.target.value)}
           />
+          {loading && (
+            <div className="mt-8 text-2xl text-center">Loading...</div>
+          )}
           {resultIn && (
             <div className="mt-8 text-2xl text-center">
               <h1 className="mb-4">
@@ -518,7 +518,7 @@ function App() {
           {odds.map((x) => (
             <div className="flex w-full">
               <button
-                className="border-2 border-white rounded-full py-2 px-5 my-2 mx-2 w-4/12 hover:bg-white hover:text-black hover:cursor-pointer"
+                className="border-2 border-white rounded-full py-2 px-5 my-2 mx-2 w-4/12 hover:bg-white hover:text-black hover:cursor-pointer disabled:opacity-40"
                 onClick={() => homeClicked(x)}
                 disabled={betDisabled}
               >
@@ -528,7 +528,7 @@ function App() {
                 </div>
               </button>
               <button
-                className="border-2 border-white rounded-full py-2 px-5 my-2 mx-2 w-4/12 hover:bg-white hover:text-black hover:cursor-pointer"
+                className="border-2 border-white rounded-full py-2 px-5 my-2 mx-2 w-4/12 hover:bg-white hover:text-black hover:cursor-pointer disabled:opacity-40"
                 onClick={() => drawClicked(x)}
                 disabled={betDisabled}
               >
@@ -539,7 +539,7 @@ function App() {
                 </div>
               </button>
               <button
-                className="border-2 border-white rounded-full py-2 px-5 my-2 mx-2 w-4/12 hover:bg-white hover:text-black hover:cursor-pointer"
+                className="border-2 border-white rounded-full py-2 px-5 my-2 mx-2 w-4/12 hover:bg-white hover:text-black hover:cursor-pointer disabled:opacity-40"
                 onClick={() => awayClicked(x)}
                 disabled={betDisabled}
               >
