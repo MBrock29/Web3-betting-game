@@ -314,7 +314,7 @@ function App() {
           <input
             type="number"
             placeholder="Enter bet amount"
-            className="flex text-center rounded-full text-black"
+            className="flex text-center rounded-full text-black pl-4"
             max={balance}
             value={betAmount}
             onChange={(e) => setBetAmount(e.target.value)}
