@@ -6,6 +6,7 @@ import Header from "./components/header/Header";
 import { ethers } from "ethers";
 import "./index.css";
 import { odds, homeWin, awayWin, draw } from "./components/header/Odds";
+import toast, { Toaster } from "react-hot-toast";
 
 function App() {
   const [balance, setBalance] = useState(0);
@@ -16,7 +17,6 @@ function App() {
   const [resultIn, setResultIn] = useState(false);
   const web3ModalRef = useRef();
   const [account, setAccount] = useState(null);
-  const [wrongNetwork, setWrongNetwork] = useState(false);
   const [result, setResult] = useState(null);
   const [depositAmount, setDepositAmount] = useState(0);
   const [withdrawalAmount, setWithdrawalAmount] = useState(0);
@@ -26,18 +26,26 @@ function App() {
   const [awayTeamSelected, setAwayTeamSelected] = useState("");
   const [displayResultOutcome, setDisplayResultOutcome] = useState("");
   const [yourSelection, setYourSelection] = useState("");
+  const [myChainId, setMyChainId] = useState("");
 
-  console.log(yourSelection, "your selection", result, "result", randomNumber);
+  useEffect(() => {
+    let toastTimer;
+    if (myChainId !== 11155111n) {
+      toastTimer = setTimeout(() => {
+        toast.error("Error: Please change the network.", {
+          duration: 4000,
+        });
+      }, 3000);
+    }
+    return () => clearTimeout(toastTimer);
+  }, [myChainId]);
 
   const getProviderOrSigner = async (needSigner = false) => {
     if (web3ModalRef.current) {
       const provider = await web3ModalRef.current.connect();
       const web3Provider = new ethers.BrowserProvider(provider);
-      // const { chainId } = await web3Provider.getNetwork();
-      // if (chainId !== 11155111) {
-      //   console.log("please change network");
-      //   setWrongNetwork(true);
-      // }
+      const { chainId } = await web3Provider.getNetwork();
+      setMyChainId(chainId);
 
       if (needSigner) {
         const signer = web3Provider.getSigner();
@@ -306,6 +314,7 @@ function App() {
         setDepositAmount={setDepositAmount}
         setWithdrawalAmount={setWithdrawalAmount}
       />
+      <Toaster />
       <div className="flex w-9/12 justify-evenly mx-auto">
         <div className="flex w-4/12 flex-col mr-5 items-center bg-[#4A5568] p-5 rounded-lg h-[70%] text-center">
           <h4 className="mb-6">Stake an amount and select a result!</h4>
@@ -366,8 +375,8 @@ function App() {
           )}
         </div>
         <div className="flex w-8/12 flex-col ml-5 bg-[#4A5568] p-5 rounded-lg h-full overflow-auto">
-          {odds.map((x) => (
-            <div className="flex w-full">
+          {odds.map((x, index) => (
+            <div className="flex w-full" key={index}>
               <button
                 className="border-2 border-white rounded-full text-sm font-bold py-2 px-5 my-2 mx-2 w-4/12 hover:bg-white hover:text-black hover:cursor-pointer disabled:opacity-40"
                 onClick={() => homeClicked(x)}
@@ -417,11 +426,6 @@ function App() {
               height={225}
             />
           )}
-        </div>
-      )} */}
-      {/* {wrongNetwork && (
-        <div>
-          <h1>Network error. Please connect to Rinkeby test network.</h1>
         </div>
       )} */}
     </div>

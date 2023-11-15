@@ -84,7 +84,7 @@ function Header({
               onClick={submitWithdraw}
               className="pb-2"
             >
-              Withdraw
+              Enter amount (in credits)
             </button>
             <div className="flex justify-center">
               <button
