@@ -466,7 +466,7 @@ function App() {
               onChange={(e) => changeInput(e)}
             />
           </div>
-          {!loading && (
+          {loading && (
             <img
               src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExNDRubG84am9rMXpqdmNrNHljNGp2NjFjYnJveG1kajRucTRkOGN5diZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/1itbXhSnMBkYEztiMQ/giphy.gif"
               width={190}
