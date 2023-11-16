@@ -304,23 +304,32 @@ function App() {
         provider
       );
       const withdrawAmount = ((withdrawalAmount * weiConv) / 10000).toString();
-      const transaction = await bettingGameContract.withdraw(withdrawAmount);
-      setLoading(true);
-      await transaction.wait();
-      await getBalance(account);
+      if (withdrawalAmount > contractBalance * 10000) {
+        toast.error(
+          `Max withdrawal at present is ${Math.floor(
+            contractBalance * 10000,
+            0
+          )}.  Please try again.`,
+          {
+            duration: 10000,
+            style: {
+              marginTop: "50px",
+            },
+          }
+        );
+      } else {
+        const transaction = await bettingGameContract.withdraw(withdrawAmount);
+        setLoading(true);
+        await transaction.wait();
+        await getBalance(account);
+      }
     } catch (err) {
-      toast.error(
-        `Withdrawal failed, max withdrawal at present is ${Math.floor(
-          contractBalance * 10000,
-          0
-        )}.  Please try again.`,
-        {
-          duration: 10000,
-          style: {
-            marginTop: "50px",
-          },
-        }
-      );
+      toast.error("Something went wrong, please try again.", {
+        duration: 10000,
+        style: {
+          marginTop: "50px",
+        },
+      });
     }
   };
 
