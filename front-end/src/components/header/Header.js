@@ -14,6 +14,7 @@ function Header({
   loggedIn,
   connectWallet,
   handleLogout,
+  myChainId,
 }) {
   const [depositing, setDepositing] = useState(false);
   const [withdrawing, setWithdrawing] = useState(false);
@@ -37,8 +38,6 @@ function Header({
     setWithdrawing(false);
     withdraw();
   };
-
-  console.log(balance, withdrawalAllowed);
   return (
     <div className="flex w-full my-5 text-xl font-bold min-h-[100px] text-center">
       <div className="w-1/5 ml-5 text-center">
@@ -47,7 +46,7 @@ function Header({
         </div>
       </div>{" "}
       <h3 className="w-1/5">0.1 test ETH = 1000 credits</h3>
-      {loggedIn ? (
+      {loggedIn && myChainId === 11155111n ? (
         <>
           <div className="flex flex-col w-1/5 items-center">
             {depositing ? (
@@ -116,7 +115,7 @@ function Header({
             ) : (
               <button
                 disabled={!withdrawalAllowed}
-                className="disabled:opacity-20"
+                className="disabled:opacity-20 disabled:hover:cursor-not-allowed"
                 onClick={withdrawFunction}
               >
                 Withdraw
