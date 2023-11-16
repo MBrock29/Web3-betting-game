@@ -36,6 +36,9 @@ function App() {
       toastTimer = setTimeout(() => {
         toast.error("Please connect to the Sepolia test network", {
           duration: 10000,
+          style: {
+            marginTop: "50px",
+          },
         });
       }, 1000);
     }
