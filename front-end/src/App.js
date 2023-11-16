@@ -194,6 +194,7 @@ function App() {
       const transaction = await bettingGameContract.deposit({
         value: ethers.parseUnits(depositAmount.toString(), "ether"),
       });
+      setResultIn(false);
       setLoading(true);
       await transaction.wait();
       await getBalance(account);
@@ -303,6 +304,11 @@ function App() {
     setDisplayResultOutcome(displayResult());
   }, [resultIn]);
 
+  const changeInput = (e) => {
+    setResultIn(false);
+    setBetAmount(e.target.value);
+  };
+
   return (
     <div className="bg-[#1A202C] text-white h-screen w-full flex flex-col">
       <Header
@@ -326,7 +332,7 @@ function App() {
             className="flex text-center rounded-full text-black pl-4"
             max={balance}
             value={betAmount}
-            onChange={(e) => setBetAmount(e.target.value)}
+            onChange={(e) => changeInput(e)}
           />
           {loading && (
             <div role="status" className="mt-12">
