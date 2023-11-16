@@ -28,6 +28,7 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [betDisabled, setBetDisabled] = useState(true);
   const [contractBalance, setContractBalance] = useState(0);
+  const [fractions, setFractions] = useState(true);
 
   const getContractBalance = async () => {
     const provider = await getProviderOrSigner();
@@ -69,6 +70,10 @@ function App() {
     setBalance(0);
     setAccount(null);
     setLoggedIn(false);
+  };
+
+  const handleChange = (event) => {
+    setFractions(event.target.value === "Fractions");
   };
 
   const getProviderOrSigner = async (needSigner = false) => {
@@ -441,9 +446,12 @@ function App() {
         handleLogout={handleLogout}
         myChainId={myChainId}
         withdrawalAmount={withdrawalAmount}
+        fractions={fractions}
+        handleChange={handleChange}
       />
+
       <Toaster />
-      <div className="flex w-9/12 justify-evenly mx-auto">
+      <div className="flex w-11/12 justify-evenly mx-auto">
         <div className="flex w-4/12 flex-col mr-5 items-center bg-[#4A5568] p-5 rounded-lg h-[70%] text-center">
           <h4 className="mb-6">Stake an amount and select a result!</h4>
           <h4 className="mb-6">Minimum bet amount: 100</h4>
@@ -495,7 +503,7 @@ function App() {
               >
                 <div>
                   {x.homeTeam} &nbsp;
-                  {x.homeOddsFrac}
+                  {fractions ? x.homeOddsFrac : x.homeOddsDec}
                 </div>
               </button>
               <button
@@ -504,8 +512,8 @@ function App() {
                 disabled={betDisabled}
               >
                 <div>
-                  {x.draw}&nbsp;
-                  {x.drawOddsFrac}
+                  {x.draw} &nbsp;
+                  {fractions ? x.drawOddsFrac : x.drawOddsDec}
                 </div>
               </button>
               <button
@@ -514,8 +522,8 @@ function App() {
                 disabled={betDisabled}
               >
                 <div>
-                  {x.awayTeam}&nbsp;
-                  {x.awayOddsFrac}
+                  {x.awayTeam} &nbsp;
+                  {fractions ? x.awayOddsFrac : x.awayOddsDec}
                 </div>
               </button>
             </div>

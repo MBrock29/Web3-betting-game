@@ -3,6 +3,7 @@ import "../../index.css";
 import { useState } from "react";
 import { MdOutlineCancel } from "react-icons/md";
 import { TiTickOutline } from "react-icons/ti";
+import { CiSettings } from "react-icons/ci";
 
 function Header({
   deposit,
@@ -17,10 +18,13 @@ function Header({
   myChainId,
   withdrawalAmount,
   depositAmount,
+  fractions,
+  handleChange,
 }) {
   const [depositing, setDepositing] = useState(false);
   const [withdrawing, setWithdrawing] = useState(false);
   const [invalidAmount, setInvalidAmount] = useState(true);
+  const [settings, setSettings] = useState(false);
   useEffect(() => {
     if (withdrawalAmount > 0 && withdrawalAmount <= balance) {
       setInvalidAmount(false);
@@ -77,7 +81,7 @@ function Header({
                     className="rounded-full text-center pl-2 border-2 border-[#323546] text-black w-[50%] text-md flex justify-center"
                   />{" "}
                   <button
-                    className=" flex justify-center w-[40px] my-auto disabled:opacity-20"
+                    className=" flex justify-center w-[40px] my-auto disabled:opacity-20 disabled:hover:cursor-not-allowed"
                     onClick={submitDeposit}
                     disabled={depositAmount <= 0}
                   >
@@ -109,7 +113,7 @@ function Header({
                     className="rounded-full text-center pl-2 border-2 border-[#323546] text-black w-[50%] text-md flex justify-center"
                   />
                   <button
-                    className=" flex justify-center w-[40px] my-auto disabled:opacity-20"
+                    className=" flex justify-center w-[40px] my-auto disabled:opacity-20 disabled:hover:cursor-not-allowed"
                     onClick={submitWithdraw}
                     disabled={invalidAmount}
                   >
@@ -129,7 +133,29 @@ function Header({
             )}
           </div>
           <div className="flex flex-col w-1/5 items-center">
-            <button onClick={handleLogout}>Log out</button>
+            <div>
+              {settings ? (
+                <div className="flex flex-col items-center">
+                  <CiSettings onClick={() => setSettings(false)} size="35px" />
+                  <div className="flex text-sm items-center">
+                    <p className="mr-1">Odds display:</p>
+                    <select
+                      value={fractions ? "Fractions" : "Decimals"}
+                      onChange={handleChange}
+                      className="bg-[#4A5568] mt-1 rounded-full px-1 pb-0.5 font-bold focus-visible:outline-none"
+                    >
+                      <option value="Fractions">Fractions</option>
+                      <option value="Decimals">Decimals</option>
+                    </select>
+                  </div>
+                  <button onClick={handleLogout} className="text-sm mt-2">
+                    Log out
+                  </button>
+                </div>
+              ) : (
+                <CiSettings onClick={() => setSettings(true)} size="35px" />
+              )}
+            </div>
           </div>
         </>
       ) : (
