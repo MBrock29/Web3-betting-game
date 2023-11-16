@@ -502,7 +502,7 @@ function App() {
               key={index}
             >
               <button
-                className="border-2 border-white rounded-full font-bold py-2 px-5 my-2 xs:mx-2 w-full xs:w-4/12 hover:bg-white hover:text-black hover:cursor-pointer disabled:opacity-40 disabled:hover:cursor-not-allowed disabled:hover:bg-[#4A5568] disabled:hover:text-white"
+                className="border-2 border-white rounded-full font-bold py-2 px-5 my-2 xs:mx-2 w-full xs:w-4/12 hover:bg-white hover:text-black hover:cursor-pointer disabled:opacity-40 disabled:hover:cursor-not-allowed disabled:hover:bg-[#4A5568] disabled:hover:text-white "
                 onClick={() => homeClicked(x)}
                 disabled={betDisabled}
               >
@@ -522,7 +522,7 @@ function App() {
                 </div>
               </button>
               <button
-                className="border-2 border-white rounded-full  font-bold py-2 px-5 my-2 xs:mx-2 w-full xs:w-4/12  hover:bg-white hover:text-black hover:cursor-pointer disabled:opacity-40 disabled:hover:cursor-not-allowed disabled:hover:bg-[#4A5568] disabled:hover:text-white"
+                className="border-2 border-white rounded-full  font-bold py-2 px-5 my-2 xs:mx-2 w-full xs:w-4/12  hover:bg-white hover:text-black hover:cursor-pointer disabled:opacity-40 disabled:hover:cursor-not-allowed disabled:hover:bg-[#4A5568] disabled:hover:text-white overflow-hidden whitespace-nowrap text-ellipses"
                 onClick={() => awayClicked(x)}
                 disabled={betDisabled}
               >
