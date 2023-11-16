@@ -34,8 +34,8 @@ function App() {
     let toastTimer;
     if (myChainId !== 11155111n) {
       toastTimer = setTimeout(() => {
-        toast.error(".", {
-          duration: 1000,
+        toast.error("Please connect to the Sepolia test network", {
+          duration: 10000,
         });
       }, 3000);
     }

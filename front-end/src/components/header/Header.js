@@ -37,6 +37,8 @@ function Header({
     setWithdrawing(false);
     withdraw();
   };
+
+  console.log(balance, withdrawalAllowed);
   return (
     <div className="flex w-full my-5 text-xl font-bold min-h-[100px] text-center">
       <div className="w-1/5 ml-5 text-center">
@@ -84,11 +86,7 @@ function Header({
           <div className="flex flex-col w-1/5 items-center">
             {withdrawing ? (
               <>
-                <button
-                  disabled={!withdrawalAllowed}
-                  onClick={submitWithdraw}
-                  className="pb-2"
-                >
+                <button onClick={submitWithdraw} className="pb-2">
                   Enter amount (in credits)
                 </button>
                 <div className="flex justify-center">
@@ -116,7 +114,13 @@ function Header({
                 <div className="flex justify-evenly w-6/12"></div>{" "}
               </>
             ) : (
-              <button onClick={withdrawFunction}>Withdraw</button>
+              <button
+                disabled={!withdrawalAllowed}
+                className="disabled:opacity-20"
+                onClick={withdrawFunction}
+              >
+                Withdraw
+              </button>
             )}
           </div>
           <div className="flex flex-col w-1/5 items-center">
