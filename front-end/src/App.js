@@ -49,7 +49,7 @@ function App() {
     if (web3ModalRef.current) {
       await web3ModalRef.current.clearCachedProvider();
     }
-
+    localStorage.removeItem("walletConnected");
     setBalance(0);
     setAccount(null);
     setLoggedIn(false);
@@ -72,24 +72,24 @@ function App() {
     }
   };
 
+  useEffect(() => {
+    if (localStorage.getItem("walletConnected") === "true") {
+      connectWallet().catch(console.error);
+    }
+  }, []);
+
   const connectWallet = async () => {
     try {
       setBalance(0);
       const provider = await getProviderOrSigner(true);
       setWalletConnected(true);
       const address = await provider.getAddress();
+      localStorage.setItem("walletConnected", "true");
       setAccount(address);
       setLoggedIn(true);
       getBalance(address);
       getRandomNumber();
-    } catch (err) {
-      toast.error("Unable to connect to wallet, please try again", {
-        duration: 10000,
-        style: {
-          marginTop: "50px",
-        },
-      });
-    }
+    } catch (err) {}
   };
 
   const getBalance = async (id) => {
