@@ -431,7 +431,7 @@ function App() {
   };
 
   return (
-    <div className="bg-[#1A202C] text-white h-screen w-full flex flex-col">
+    <div className="bg-[#1A202C] text-white h-full w-full flex flex-col">
       <Header
         deposit={deposit}
         withdraw={withdraw}
@@ -495,7 +495,7 @@ function App() {
             </div>
           )}
         </div>
-        <div className="flex w-fit xs:w-full text-xs sm:text-sm sm:w-8/12 flex-col mx-auto sm:ml-5 bg-[#4A5568] p-5 rounded-lg h-full overflow-auto">
+        <div className="flex w-fit xs:w-full text-xs sm:text-sm sm:w-8/12 mb-6 flex-col mx-auto sm:ml-5 bg-[#4A5568] p-5 rounded-lg h-full overflow-auto">
           {odds.map((x, index) => (
             <div
               className="flex w-full flex-col xs:flex-row mb-8 xs:mb-0"
