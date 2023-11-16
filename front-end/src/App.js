@@ -451,7 +451,7 @@ function App() {
       />
 
       <Toaster />
-      <div className="flex w-11/12 justify-evenly mx-auto text-sm flex-col sm:flex-row">
+      <div className="flex w-11/12 justify-evenly mx-auto text-sm sm:text-lg flex-col sm:flex-row">
         <div className="flex w-fit mx-auto h-fit mb-5 sm:mb-0 sm:w-4/12 flex-col sm:mr-5 sm:items-center bg-[#4A5568] p-5 rounded-lg sm:h-[70%] text-center">
           <div>
             <h4 className="mb-6">Stake an amount and select a result!</h4>
