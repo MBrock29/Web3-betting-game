@@ -11,6 +11,9 @@ function Header({
   balance,
   setDepositAmount,
   setWithdrawalAmount,
+  loggedIn,
+  connectWallet,
+  handleLogout,
 }) {
   const [depositing, setDepositing] = useState(false);
   const [withdrawing, setWithdrawing] = useState(false);
@@ -42,78 +45,89 @@ function Header({
         </div>
       </div>{" "}
       <h3 className="w-1/4">0.1 test ETH = 1000 credits</h3>
-      <div className="flex flex-col w-1/4 items-center">
-        {depositing ? (
-          <>
-            {" "}
-            <button onClick={submitDeposit} className="pb-2">
-              Enter amount (in credits)
-            </button>
-            <div className="flex justify-center">
-              <button
-                className=" flex justify-center w-[40px] my-auto"
-                onClick={() => setDepositing(false)}
-              >
-                <MdOutlineCancel size="25px" />
-              </button>
-              <input
-                type="number"
-                placeholder="0"
-                max={1}
-                onChange={(e) => setDepositAmount(e.target.value / 10000)}
-                className="rounded-full text-center pl-2 border-2 border-[#323546] text-black w-[50%] text-md flex justify-center"
-              />{" "}
-              <button
-                className=" flex justify-center w-[40px] my-auto"
-                onClick={submitDeposit}
-              >
-                <TiTickOutline size="28px" />
-              </button>
-            </div>
-            <div className="flex justify-evenly w-6/12"></div>
-          </>
-        ) : (
-          <button onClick={depositFunction}>Deposit</button>
-        )}
-      </div>
-      <div className="flex flex-col w-1/4 items-center">
-        {withdrawing ? (
-          <>
-            <button
-              disabled={!withdrawalAllowed}
-              onClick={submitWithdraw}
-              className="pb-2"
-            >
-              Enter amount (in credits)
-            </button>
-            <div className="flex justify-center">
-              <button
-                className=" flex justify-center w-[40px] my-auto"
-                onClick={() => setWithdrawing(false)}
-              >
-                <MdOutlineCancel size="25px" />
-              </button>
+      {loggedIn ? (
+        <>
+          <div className="flex flex-col w-1/4 items-center">
+            {depositing ? (
+              <>
+                {" "}
+                <button onClick={submitDeposit} className="pb-2">
+                  Enter amount (in credits)
+                </button>
+                <div className="flex justify-center">
+                  <button
+                    className=" flex justify-center w-[40px] my-auto"
+                    onClick={() => setDepositing(false)}
+                  >
+                    <MdOutlineCancel size="25px" />
+                  </button>
+                  <input
+                    type="number"
+                    placeholder="0"
+                    max={1}
+                    onChange={(e) => setDepositAmount(e.target.value / 10000)}
+                    className="rounded-full text-center pl-2 border-2 border-[#323546] text-black w-[50%] text-md flex justify-center"
+                  />{" "}
+                  <button
+                    className=" flex justify-center w-[40px] my-auto"
+                    onClick={submitDeposit}
+                  >
+                    <TiTickOutline size="28px" />
+                  </button>
+                </div>
+                <div className="flex justify-evenly w-6/12"></div>
+              </>
+            ) : (
+              <button onClick={depositFunction}>Deposit</button>
+            )}
+          </div>
+          <div className="flex flex-col w-1/4 items-center">
+            {withdrawing ? (
+              <>
+                <button
+                  disabled={!withdrawalAllowed}
+                  onClick={submitWithdraw}
+                  className="pb-2"
+                >
+                  Enter amount (in credits)
+                </button>
+                <div className="flex justify-center">
+                  <button
+                    className=" flex justify-center w-[40px] my-auto"
+                    onClick={() => setWithdrawing(false)}
+                  >
+                    <MdOutlineCancel size="25px" />
+                  </button>
 
-              <input
-                type="number"
-                placeholder="0"
-                max={balance}
-                onChange={(e) => setWithdrawalAmount(e.target.value)}
-                className="rounded-full text-center pl-2 border-2 border-[#323546] text-black w-[50%] text-md flex justify-center"
-              />
-              <button
-                className=" flex justify-center w-[40px] my-auto"
-                onClick={submitWithdraw}
-              >
-                <TiTickOutline size="28px" />
-              </button>
-            </div>
-            <div className="flex justify-evenly w-6/12"></div>{" "}
-          </>
-        ) : (
-          <button onClick={withdrawFunction}>Withdraw</button>
-        )}
-      </div>
+                  <input
+                    type="number"
+                    placeholder="0"
+                    max={balance}
+                    onChange={(e) => setWithdrawalAmount(e.target.value)}
+                    className="rounded-full text-center pl-2 border-2 border-[#323546] text-black w-[50%] text-md flex justify-center"
+                  />
+                  <button
+                    className=" flex justify-center w-[40px] my-auto"
+                    onClick={submitWithdraw}
+                  >
+                    <TiTickOutline size="28px" />
+                  </button>
+                </div>
+                <div className="flex justify-evenly w-6/12"></div>{" "}
+              </>
+            ) : (
+              <button onClick={withdrawFunction}>Withdraw</button>
+            )}
+          </div>
+          <div>
+            <button onClick={handleLogout}>Log out</button>
+          </div>
+        </>
+      ) : (
+        <div>
+          <button onClick={connectWallet}>Log in</button>
+        </div>
+      )}
     </div>
   );
 }

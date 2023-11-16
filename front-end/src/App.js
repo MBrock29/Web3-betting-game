@@ -27,6 +27,7 @@ function App() {
   const [displayResultOutcome, setDisplayResultOutcome] = useState("");
   const [yourSelection, setYourSelection] = useState("");
   const [myChainId, setMyChainId] = useState("");
+  const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
     let toastTimer;
@@ -39,6 +40,17 @@ function App() {
     }
     return () => clearTimeout(toastTimer);
   }, [myChainId]);
+
+  const handleLogout = async () => {
+    if (web3ModalRef.current) {
+      await web3ModalRef.current.clearCachedProvider();
+    }
+
+    setBalance(0);
+    setAccount(null);
+    setLoggedIn(false);
+    setWalletConnected(false);
+  };
 
   const getProviderOrSigner = async (needSigner = false) => {
     if (web3ModalRef.current) {
@@ -62,6 +74,7 @@ function App() {
       setWalletConnected(true);
       const address = await provider.getAddress();
       setAccount(address);
+      setLoggedIn(true);
       getBalance(address);
       getRandomNumber();
     } catch (err) {
@@ -227,15 +240,12 @@ function App() {
   const betInvalid = betAmount < 100;
 
   useEffect(() => {
-    if (!walletConnected) {
-      web3ModalRef.current = new Web3Modal({
-        network: "rinkeby",
-        providerOptions: {},
-        disableInjectedProvider: false,
-      });
-      connectWallet();
-    }
-  }, [walletConnected]);
+    web3ModalRef.current = new Web3Modal({
+      network: "sepolia",
+      providerOptions: {},
+      disableInjectedProvider: false,
+    });
+  }, []);
 
   const withdrawalAllowed = balance > 0;
 
@@ -319,6 +329,9 @@ function App() {
         balance={(balance / weiConv) * 10000}
         setDepositAmount={setDepositAmount}
         setWithdrawalAmount={setWithdrawalAmount}
+        loggedIn={loggedIn}
+        connectWallet={connectWallet}
+        handleLogout={handleLogout}
       />
       <Toaster />
       <div className="flex w-9/12 justify-evenly mx-auto">
