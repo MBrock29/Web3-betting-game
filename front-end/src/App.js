@@ -28,13 +28,14 @@ function App() {
   const [yourSelection, setYourSelection] = useState("");
   const [myChainId, setMyChainId] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
+  const [betDisabled, setBetDisabled] = useState(true);
 
   useEffect(() => {
     let toastTimer;
     if (myChainId !== 11155111n) {
       toastTimer = setTimeout(() => {
-        toast.error("Error: Please change the network.", {
-          duration: 4000,
+        toast.error(".", {
+          duration: 1000,
         });
       }, 3000);
     }
@@ -234,10 +235,17 @@ function App() {
     }
   };
 
-  const betDisabled =
-    betAmount < 100 || betAmount > 1000 || betAmount > balance;
-
-  const betInvalid = betAmount < 100;
+  useEffect(() => {
+    if (
+      betAmount < 100 ||
+      betAmount > 1000 ||
+      betAmount > (balance / weiConv) * 10000
+    ) {
+      setBetDisabled(true);
+    } else {
+      setBetDisabled(false);
+    }
+  }, [betAmount, balance]);
 
   useEffect(() => {
     web3ModalRef.current = new Web3Modal({
@@ -397,7 +405,7 @@ function App() {
           {odds.map((x, index) => (
             <div className="flex w-full" key={index}>
               <button
-                className="border-2 border-white rounded-full text-sm font-bold py-2 px-5 my-2 mx-2 w-4/12 hover:bg-white hover:text-black hover:cursor-pointer disabled:opacity-40"
+                className="border-2 border-white rounded-full text-sm font-bold py-2 px-5 my-2 mx-2 w-4/12 hover:bg-white hover:text-black hover:cursor-pointer disabled:opacity-40 disabled:hover:cursor-not-allowed disabled:hover:bg-[#4A5568] disabled:hover:text-white"
                 onClick={() => homeClicked(x)}
                 disabled={betDisabled}
               >
@@ -407,7 +415,7 @@ function App() {
                 </div>
               </button>
               <button
-                className="border-2 border-white rounded-full text-sm font-bold py-2 px-5 my-2 mx-2 w-4/12 hover:bg-white hover:text-black hover:cursor-pointer disabled:opacity-40"
+                className="border-2 border-white rounded-full text-sm font-bold py-2 px-5 my-2 mx-2 w-4/12 hover:bg-white hover:text-black hover:cursor-pointer disabled:opacity-40 disabled:hover:cursor-not-allowed disabled:hover:bg-[#4A5568] disabled:hover:text-white"
                 onClick={() => drawClicked(x)}
                 disabled={betDisabled}
               >
@@ -417,7 +425,7 @@ function App() {
                 </div>
               </button>
               <button
-                className="border-2 border-white rounded-full text-sm font-bold py-2 px-5 my-2 mx-2 w-4/12 hover:bg-white hover:text-black hover:cursor-pointer disabled:opacity-40"
+                className="border-2 border-white rounded-full text-sm font-bold py-2 px-5 my-2 mx-2 w-4/12 hover:bg-white hover:text-black hover:cursor-pointer disabled:opacity-40 disabled:hover:cursor-not-allowed disabled:hover:bg-[#4A5568] disabled:hover:text-white"
                 onClick={() => awayClicked(x)}
                 disabled={betDisabled}
               >

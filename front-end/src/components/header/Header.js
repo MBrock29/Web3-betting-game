@@ -39,15 +39,15 @@ function Header({
   };
   return (
     <div className="flex w-full my-5 text-xl font-bold min-h-[100px] text-center">
-      <div className="w-1/4 ml-5 text-center">
+      <div className="w-1/5 ml-5 text-center">
         <div>
-          <p>Balance: {Math.round(balance, 0)}</p>
+          <p>Balance: {Math.round(balance, 10)}</p>
         </div>
       </div>{" "}
-      <h3 className="w-1/4">0.1 test ETH = 1000 credits</h3>
+      <h3 className="w-1/5">0.1 test ETH = 1000 credits</h3>
       {loggedIn ? (
         <>
-          <div className="flex flex-col w-1/4 items-center">
+          <div className="flex flex-col w-1/5 items-center">
             {depositing ? (
               <>
                 {" "}
@@ -81,7 +81,7 @@ function Header({
               <button onClick={depositFunction}>Deposit</button>
             )}
           </div>
-          <div className="flex flex-col w-1/4 items-center">
+          <div className="flex flex-col w-1/5 items-center">
             {withdrawing ? (
               <>
                 <button
@@ -119,12 +119,12 @@ function Header({
               <button onClick={withdrawFunction}>Withdraw</button>
             )}
           </div>
-          <div>
+          <div className="flex flex-col w-1/5 items-center">
             <button onClick={handleLogout}>Log out</button>
           </div>
         </>
       ) : (
-        <div>
+        <div className="flex flex-col w-3/5 items-center">
           <button onClick={connectWallet}>Log in</button>
         </div>
       )}
