@@ -82,7 +82,14 @@ function App() {
       setLoggedIn(true);
       getBalance(address);
       getRandomNumber();
-    } catch (err) {}
+    } catch (err) {
+      toast.error("Unable to connect to wallet, please try again", {
+        duration: 10000,
+        style: {
+          marginTop: "50px",
+        },
+      });
+    }
   };
 
   const getBalance = async (id) => {
@@ -100,6 +107,12 @@ function App() {
       setBetAmount(0);
     } catch (err) {
       setLoading(false);
+      toast.error("Unable to fetch balance, please try again", {
+        duration: 10000,
+        style: {
+          marginTop: "50px",
+        },
+      });
     }
   };
 
@@ -116,7 +129,14 @@ function App() {
       setRandomNumber(ethers.formatUnits(rand, 0));
       const outcome = await bettingGameContract.getResult();
       setResult(outcome);
-    } catch (err) {}
+    } catch (err) {
+      toast.error("Unable to simulate result, please try again", {
+        duration: 10000,
+        style: {
+          marginTop: "50px",
+        },
+      });
+    }
   };
 
   const betHomeTeam = async (odds, perc) => {
@@ -147,6 +167,12 @@ function App() {
       await getBalance(account);
     } catch (err) {
       setLoading(false);
+      toast.error("Transaction failed, no money was taken, please try again", {
+        duration: 10000,
+        style: {
+          marginTop: "50px",
+        },
+      });
     }
   };
 
@@ -177,6 +203,12 @@ function App() {
       await getBalance(account);
     } catch (err) {
       setLoading(false);
+      toast.error("Transaction failed, no money was taken, please try again", {
+        duration: 10000,
+        style: {
+          marginTop: "50px",
+        },
+      });
     }
   };
 
@@ -208,6 +240,12 @@ function App() {
       await getBalance(account);
     } catch (err) {
       setLoading(false);
+      toast.error("Transaction failed, no money was taken, please try again", {
+        duration: 10000,
+        style: {
+          marginTop: "50px",
+        },
+      });
     }
   };
 
@@ -226,7 +264,14 @@ function App() {
       setLoading(true);
       await transaction.wait();
       await getBalance(account);
-    } catch (err) {}
+    } catch (err) {
+      toast.error("Deposit failed, please try again", {
+        duration: 10000,
+        style: {
+          marginTop: "50px",
+        },
+      });
+    }
   };
 
   const withdraw = async () => {
@@ -242,7 +287,14 @@ function App() {
       setLoading(true);
       await transaction.wait();
       await getBalance(account);
-    } catch (err) {}
+    } catch (err) {
+      toast.error("Withdrawal failed, please try again", {
+        duration: 10000,
+        style: {
+          marginTop: "50px",
+        },
+      });
+    }
   };
 
   useEffect(() => {
