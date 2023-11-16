@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../../index.css";
 import { useState } from "react";
 import { MdOutlineCancel } from "react-icons/md";
@@ -15,9 +15,19 @@ function Header({
   connectWallet,
   handleLogout,
   myChainId,
+  withdrawalAmount,
+  depositAmount,
 }) {
   const [depositing, setDepositing] = useState(false);
   const [withdrawing, setWithdrawing] = useState(false);
+  const [invalidAmount, setInvalidAmount] = useState(true);
+  useEffect(() => {
+    if (withdrawalAmount > 0 && withdrawalAmount <= balance) {
+      setInvalidAmount(false);
+    } else {
+      setInvalidAmount(true);
+    }
+  }, [withdrawalAmount]);
 
   const depositFunction = () => {
     setDepositing(true);
@@ -52,9 +62,7 @@ function Header({
             {depositing ? (
               <>
                 {" "}
-                <button onClick={submitDeposit} className="pb-2">
-                  Enter amount (in credits)
-                </button>
+                <p className="pb-2">Enter amount (in credits)</p>
                 <div className="flex justify-center">
                   <button
                     className=" flex justify-center w-[40px] my-auto"
@@ -65,13 +73,13 @@ function Header({
                   <input
                     type="number"
                     placeholder="0"
-                    max={1}
                     onChange={(e) => setDepositAmount(e.target.value / 10000)}
                     className="rounded-full text-center pl-2 border-2 border-[#323546] text-black w-[50%] text-md flex justify-center"
                   />{" "}
                   <button
-                    className=" flex justify-center w-[40px] my-auto"
+                    className=" flex justify-center w-[40px] my-auto disabled:opacity-20"
                     onClick={submitDeposit}
+                    disabled={depositAmount <= 0}
                   >
                     <TiTickOutline size="28px" />
                   </button>
@@ -85,9 +93,7 @@ function Header({
           <div className="flex flex-col w-1/5 items-center">
             {withdrawing ? (
               <>
-                <button onClick={submitWithdraw} className="pb-2">
-                  Enter amount (in credits)
-                </button>
+                <p className="pb-2">Enter amount (in credits)</p>
                 <div className="flex justify-center">
                   <button
                     className=" flex justify-center w-[40px] my-auto"
@@ -95,7 +101,6 @@ function Header({
                   >
                     <MdOutlineCancel size="25px" />
                   </button>
-
                   <input
                     type="number"
                     placeholder="0"
@@ -104,8 +109,9 @@ function Header({
                     className="rounded-full text-center pl-2 border-2 border-[#323546] text-black w-[50%] text-md flex justify-center"
                   />
                   <button
-                    className=" flex justify-center w-[40px] my-auto"
+                    className=" flex justify-center w-[40px] my-auto disabled:opacity-20"
                     onClick={submitWithdraw}
+                    disabled={invalidAmount}
                   >
                     <TiTickOutline size="28px" />
                   </button>

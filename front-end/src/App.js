@@ -12,8 +12,6 @@ function App() {
   const [balance, setBalance] = useState(0);
   const [loading, setLoading] = useState(false);
   const [betAmount, setBetAmount] = useState("");
-  const [randomNumber, setRandomNumber] = useState(20);
-  const [walletConnected, setWalletConnected] = useState(false);
   const [resultIn, setResultIn] = useState(false);
   const web3ModalRef = useRef();
   const [account, setAccount] = useState(null);
@@ -29,12 +27,30 @@ function App() {
   const [myChainId, setMyChainId] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
   const [betDisabled, setBetDisabled] = useState(true);
+  const [contractBalance, setContractBalance] = useState(0);
+
+  const getContractBalance = async () => {
+    const provider = await getProviderOrSigner();
+    const contract = new ethers.Contract(
+      BETTING_GAME_CONTRACT_ADDRESS,
+      abi,
+      provider
+    );
+    const balance = await provider.getBalance(contract.target);
+    setContractBalance(ethers.formatEther(balance));
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      getContractBalance();
+    }, 3000);
+  }, [balance, loading]);
 
   useEffect(() => {
     let toastTimer;
     if (myChainId !== 11155111n && loggedIn) {
       toastTimer = setTimeout(() => {
-        toast.error("Please connect to the Sepolia test network", {
+        toast.error("Please connect to the Sepolia test network.", {
           duration: 10000,
           style: {
             marginTop: "50px",
@@ -53,7 +69,6 @@ function App() {
     setBalance(0);
     setAccount(null);
     setLoggedIn(false);
-    setWalletConnected(false);
   };
 
   const getProviderOrSigner = async (needSigner = false) => {
@@ -82,7 +97,6 @@ function App() {
     try {
       setBalance(0);
       const provider = await getProviderOrSigner(true);
-      setWalletConnected(true);
       const address = await provider.getAddress();
       localStorage.setItem("walletConnected", "true");
       setAccount(address);
@@ -107,7 +121,7 @@ function App() {
       setBetAmount(0);
     } catch (err) {
       setLoading(false);
-      toast.error("Unable to fetch balance, please try again", {
+      toast.error("Unable to fetch balance, please try again.", {
         duration: 10000,
         style: {
           marginTop: "50px",
@@ -124,13 +138,11 @@ function App() {
         abi,
         provider
       );
-      const rand = await bettingGameContract.getRandomNumber();
       setBetAmount("");
-      setRandomNumber(ethers.formatUnits(rand, 0));
       const outcome = await bettingGameContract.getResult();
       setResult(outcome);
     } catch (err) {
-      toast.error("Unable to simulate result, please try again", {
+      toast.error("Unable to simulate result.  Please try again.", {
         duration: 10000,
         style: {
           marginTop: "50px",
@@ -155,7 +167,7 @@ function App() {
       );
       setTeamSelected("home");
       setLoading(true);
-      toast.loading("Transaction submitted, please wait", {
+      toast.loading("Transaction submitted, please wait.", {
         duration: 10000,
         style: {
           marginTop: "50px",
@@ -167,12 +179,15 @@ function App() {
       await getBalance(account);
     } catch (err) {
       setLoading(false);
-      toast.error("Transaction failed, no money was taken, please try again", {
-        duration: 10000,
-        style: {
-          marginTop: "50px",
-        },
-      });
+      toast.error(
+        "Transaction failed, no money was taken.  Please try again.",
+        {
+          duration: 10000,
+          style: {
+            marginTop: "50px",
+          },
+        }
+      );
     }
   };
 
@@ -203,12 +218,15 @@ function App() {
       await getBalance(account);
     } catch (err) {
       setLoading(false);
-      toast.error("Transaction failed, no money was taken, please try again", {
-        duration: 10000,
-        style: {
-          marginTop: "50px",
-        },
-      });
+      toast.error(
+        "Transaction failed, no money was taken.  Please try again.",
+        {
+          duration: 10000,
+          style: {
+            marginTop: "50px",
+          },
+        }
+      );
     }
   };
 
@@ -228,7 +246,7 @@ function App() {
       );
       setTeamSelected("away");
       setLoading(true);
-      toast.loading("Transaction submitted, please wait", {
+      toast.loading("Transaction submitted, please wait.", {
         duration: 10000,
         style: {
           marginTop: "50px",
@@ -240,12 +258,15 @@ function App() {
       await getBalance(account);
     } catch (err) {
       setLoading(false);
-      toast.error("Transaction failed, no money was taken, please try again", {
-        duration: 10000,
-        style: {
-          marginTop: "50px",
-        },
-      });
+      toast.error(
+        "Transaction failed, no money was taken.  Please try again.",
+        {
+          duration: 10000,
+          style: {
+            marginTop: "50px",
+          },
+        }
+      );
     }
   };
 
@@ -265,7 +286,7 @@ function App() {
       await transaction.wait();
       await getBalance(account);
     } catch (err) {
-      toast.error("Deposit failed, please try again", {
+      toast.error("Deposit failed, please try again.", {
         duration: 10000,
         style: {
           marginTop: "50px",
@@ -288,12 +309,18 @@ function App() {
       await transaction.wait();
       await getBalance(account);
     } catch (err) {
-      toast.error("Withdrawal failed, please try again", {
-        duration: 10000,
-        style: {
-          marginTop: "50px",
-        },
-      });
+      toast.error(
+        `Withdrawal failed, max withdrawal at present is ${Math.floor(
+          contractBalance * 10000,
+          0
+        )}.  Please try again.`,
+        {
+          duration: 10000,
+          style: {
+            marginTop: "50px",
+          },
+        }
+      );
     }
   };
 
@@ -398,11 +425,13 @@ function App() {
         address={account}
         balance={(balance / weiConv) * 10000}
         setDepositAmount={setDepositAmount}
+        depositAmount={depositAmount}
         setWithdrawalAmount={setWithdrawalAmount}
         loggedIn={loggedIn}
         connectWallet={connectWallet}
         handleLogout={handleLogout}
         myChainId={myChainId}
+        withdrawalAmount={withdrawalAmount}
       />
       <Toaster />
       <div className="flex w-9/12 justify-evenly mx-auto">
@@ -484,23 +513,6 @@ function App() {
           ))}
         </div>
       </div>
-      {/* {resultIn && (
-        <div>
-          {result ? (
-            <img
-              src="https://media.giphy.com/media/l0Ex6kAKAoFRsFh6M/giphy.gif"
-              width={300}
-              height={225}
-            />
-          ) : (
-            <img
-              src="https://media.giphy.com/media/YJjvTqoRFgZaM/giphy.gif"
-              width={300}
-              height={225}
-            />
-          )}
-        </div>
-      )} */}
     </div>
   );
 }
