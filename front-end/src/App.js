@@ -451,40 +451,42 @@ function App() {
       />
 
       <Toaster />
-      <div className="flex w-11/12 justify-evenly mx-auto">
-        <div className="flex w-4/12 flex-col mr-5 items-center bg-[#4A5568] p-5 rounded-lg h-[70%] text-center">
-          <h4 className="mb-6">Stake an amount and select a result!</h4>
-          <h4 className="mb-6">Minimum bet amount: 100</h4>
-          <h4 className="mb-6">Maximum bet amount: 1000</h4>
-          <input
-            type="number"
-            placeholder="Enter bet amount"
-            className="flex text-center rounded-full text-black pl-4"
-            max={balance}
-            value={betAmount}
-            onChange={(e) => changeInput(e)}
-          />
-          {loading && (
+      <div className="flex w-11/12 justify-evenly mx-auto text-sm flex-col sm:flex-row">
+        <div className="flex w-fit mx-auto h-fit mb-5 sm:mb-0 sm:w-4/12 flex-col sm:mr-5 sm:items-center bg-[#4A5568] p-5 rounded-lg sm:h-[70%] text-center">
+          <div>
+            <h4 className="mb-6">Stake an amount and select a result!</h4>
+            <h4 className="mb-6">Minimum bet amount: 100</h4>
+            <h4 className="mb-6">Maximum bet amount: 1000</h4>
+            <input
+              type="number"
+              placeholder="Enter bet amount"
+              className="flex text-center rounded-full mx-auto text-black pl-4"
+              max={balance}
+              value={betAmount}
+              onChange={(e) => changeInput(e)}
+            />
+          </div>
+          {!loading && (
             <img
               src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExNDRubG84am9rMXpqdmNrNHljNGp2NjFjYnJveG1kajRucTRkOGN5diZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/1itbXhSnMBkYEztiMQ/giphy.gif"
               width={190}
               height={142}
               alt="Loading..."
-              className=" mt-4 rounded-xl"
+              className=" mt-4 rounded-xl mx-auto "
             />
           )}
           {resultIn && (
-            <div className="mt-6 text-2xl text-center">
+            <div className="mt-6 md:text-2xl text-center">
               <h2 className="mb-4 font-bold">
                 Your selection is {yourSelection}
               </h2>
-              <h2 className="mb-4 text-xl">
+              <h2 className="mb-4 md:text-xl">
                 Result is... <br />
                 <div className="mt-4">
                   {homeTeamSelected} {displayResultOutcome} {awayTeamSelected}
                 </div>
               </h2>
-              <h2 className="text-xl">
+              <h2 className="md:text-xl">
                 {" "}
                 {result
                   ? "Congratulations!"
@@ -493,11 +495,14 @@ function App() {
             </div>
           )}
         </div>
-        <div className="flex w-8/12 flex-col ml-5 bg-[#4A5568] p-5 rounded-lg h-full overflow-auto">
+        <div className="flex w-fit xs:w-full text-xs sm:text-sm sm:w-8/12 flex-col mx-auto sm:ml-5 bg-[#4A5568] p-5 rounded-lg h-full overflow-auto">
           {odds.map((x, index) => (
-            <div className="flex w-full" key={index}>
+            <div
+              className="flex w-full flex-col xs:flex-row mb-8 xs:mb-0"
+              key={index}
+            >
               <button
-                className="border-2 border-white rounded-full text-sm font-bold py-2 px-5 my-2 mx-2 w-4/12 hover:bg-white hover:text-black hover:cursor-pointer disabled:opacity-40 disabled:hover:cursor-not-allowed disabled:hover:bg-[#4A5568] disabled:hover:text-white"
+                className="border-2 border-white rounded-full font-bold py-2 px-5 my-2 xs:mx-2 w-full xs:w-4/12 hover:bg-white hover:text-black hover:cursor-pointer disabled:opacity-40 disabled:hover:cursor-not-allowed disabled:hover:bg-[#4A5568] disabled:hover:text-white"
                 onClick={() => homeClicked(x)}
                 disabled={betDisabled}
               >
@@ -507,7 +512,7 @@ function App() {
                 </div>
               </button>
               <button
-                className="border-2 border-white rounded-full text-sm font-bold py-2 px-5 my-2 mx-2 w-4/12 hover:bg-white hover:text-black hover:cursor-pointer disabled:opacity-40 disabled:hover:cursor-not-allowed disabled:hover:bg-[#4A5568] disabled:hover:text-white"
+                className="border-2 border-white rounded-full font-bold py-2 px-5 my-2 xs:mx-2 w-full xs:w-4/12  hover:bg-white hover:text-black hover:cursor-pointer disabled:opacity-40 disabled:hover:cursor-not-allowed disabled:hover:bg-[#4A5568] disabled:hover:text-white"
                 onClick={() => drawClicked(x)}
                 disabled={betDisabled}
               >
@@ -517,7 +522,7 @@ function App() {
                 </div>
               </button>
               <button
-                className="border-2 border-white rounded-full text-sm font-bold py-2 px-5 my-2 mx-2 w-4/12 hover:bg-white hover:text-black hover:cursor-pointer disabled:opacity-40 disabled:hover:cursor-not-allowed disabled:hover:bg-[#4A5568] disabled:hover:text-white"
+                className="border-2 border-white rounded-full  font-bold py-2 px-5 my-2 xs:mx-2 w-full xs:w-4/12  hover:bg-white hover:text-black hover:cursor-pointer disabled:opacity-40 disabled:hover:cursor-not-allowed disabled:hover:bg-[#4A5568] disabled:hover:text-white"
                 onClick={() => awayClicked(x)}
                 disabled={betDisabled}
               >

@@ -34,6 +34,7 @@ function Header({
   }, [withdrawalAmount]);
 
   const depositFunction = () => {
+    setSettings(false);
     setDepositing(true);
     setWithdrawing(false);
   };
@@ -41,6 +42,7 @@ function Header({
   const withdrawFunction = () => {
     setWithdrawing(true);
     setDepositing(false);
+    setSettings(false);
   };
 
   const submitDeposit = () => {
@@ -53,7 +55,7 @@ function Header({
     withdraw();
   };
   return (
-    <div className="flex w-full my-5 text-xl font-bold min-h-[100px] text-center">
+    <div className="flex w-full my-5 text-sm sm:text-xl font-bold min-h-[100px] text-center">
       <div className="w-1/5 ml-5 text-center">
         <div>
           <p>Balance: {Math.round(balance, 10)}</p>
