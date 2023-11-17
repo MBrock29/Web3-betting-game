@@ -165,7 +165,7 @@ function App() {
       setResult(outcome);
     } catch (err) {
       toast.error("Unable to simulate result.  Please try again.", {
-        duration: 10000,
+        duration: 6000,
         style: {
           marginTop: "50px",
         },
@@ -210,7 +210,7 @@ function App() {
       toast.error(
         "Transaction failed, no money was taken.  Please try again.",
         {
-          duration: 10000,
+          duration: 6000,
           style: {
             marginTop: "50px",
           },
@@ -255,7 +255,7 @@ function App() {
       toast.error(
         "Transaction failed, no money was taken.  Please try again.",
         {
-          duration: 10000,
+          duration: 6000,
           style: {
             marginTop: "50px",
           },
@@ -301,7 +301,7 @@ function App() {
       toast.error(
         "Transaction failed, no money was taken.  Please try again.",
         {
-          duration: 10000,
+          duration: 6000,
           style: {
             marginTop: "50px",
           },
@@ -332,7 +332,7 @@ function App() {
       await transaction.wait();
       await getBalance(account);
       toast.success(`Deposit of ${depositAmount}ETH successful, good luck!`, {
-        duration: 10000,
+        duration: 6000,
         style: {
           marginTop: "50px",
         },
@@ -359,11 +359,11 @@ function App() {
       if (withdrawalAmount > contractBalance * 10000) {
         toast.error(
           `Max withdrawal at present is ${Math.floor(
-            contractBalance * 10000,
+            contractBalance * 6000,
             0
           )}.  Please try again.`,
           {
-            duration: 10000,
+            duration: 6000,
             style: {
               marginTop: "50px",
             },
@@ -378,7 +378,7 @@ function App() {
           },
         });
         setResultIn(false);
-        setWaiting(true);
+        await setWaiting(true);
         await transaction.wait();
         await getBalance(account);
         toast.success(
@@ -386,7 +386,7 @@ function App() {
             withdrawalAmount / 10000
           }ETH successful, thanks for playing!`,
           {
-            duration: 5000,
+            duration: 6000,
             style: {
               marginTop: "50px",
             },
