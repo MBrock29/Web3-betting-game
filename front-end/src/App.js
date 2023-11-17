@@ -58,7 +58,6 @@ function App() {
 
   useEffect(() => {
     const savedFractions = localStorage.getItem("fractions");
-    console.log(savedFractions);
     if (savedFractions !== null) {
       setFractions(savedFractions === "true");
     }
@@ -359,7 +358,7 @@ function App() {
       if (withdrawalAmount > contractBalance * 10000) {
         toast.error(
           `Max withdrawal at present is ${Math.floor(
-            contractBalance * 6000,
+            contractBalance * 10000,
             0
           )}.  Please try again.`,
           {
@@ -378,7 +377,7 @@ function App() {
           },
         });
         setResultIn(false);
-        await setWaiting(true);
+        setWaiting(true);
         await transaction.wait();
         await getBalance(account);
         toast.success(
@@ -498,7 +497,6 @@ function App() {
     setBetAmount(e.target.value);
   };
 
-  console.log(depositAmount, withdrawalAmount / 10000);
   return (
     <div className="bg-[#1A202C] text-white min-h-screen h-full w-full flex flex-col">
       <Header
