@@ -139,10 +139,10 @@ function App() {
       setBalance(
         ethers.formatUnits(await bettingGameContract.getBalance(id), 0)
       );
-      setLoading(false);
+      setWaiting(false);
       setBetAmount(0);
     } catch (err) {
-      setLoading(false);
+      setWaiting(false);
       toast.error("Unable to fetch balance, please try again.", {
         duration: 10000,
         style: {
@@ -199,6 +199,12 @@ function App() {
       await getRandomNumber();
       await setResultIn(true);
       await getBalance(account);
+      toast.success("Transaction successful", {
+        duration: 3000,
+        style: {
+          marginTop: "50px",
+        },
+      });
     } catch (err) {
       setLoading(false);
       toast.error(
@@ -238,6 +244,12 @@ function App() {
       await getRandomNumber();
       await setResultIn(true);
       await getBalance(account);
+      toast.success("Transaction successful", {
+        duration: 3000,
+        style: {
+          marginTop: "50px",
+        },
+      });
     } catch (err) {
       setLoading(false);
       toast.error(
@@ -278,6 +290,12 @@ function App() {
       await getRandomNumber();
       await setResultIn(true);
       await getBalance(account);
+      toast.success("Transaction successful", {
+        duration: 3000,
+        style: {
+          marginTop: "50px",
+        },
+      });
     } catch (err) {
       setLoading(false);
       toast.error(
@@ -303,10 +321,22 @@ function App() {
       const transaction = await bettingGameContract.deposit({
         value: ethers.parseUnits(depositAmount.toString(), "ether"),
       });
+      toast.loading("Deposit submitted, please wait.", {
+        duration: 3000,
+        style: {
+          marginTop: "50px",
+        },
+      });
       setResultIn(false);
       setWaiting(true);
       await transaction.wait();
       await getBalance(account);
+      toast.success(`Deposit of ${depositAmount}ETH successful, good luck!`, {
+        duration: 10000,
+        style: {
+          marginTop: "50px",
+        },
+      });
     } catch (err) {
       toast.error("Deposit failed, please try again.", {
         duration: 10000,
@@ -341,14 +371,31 @@ function App() {
         );
       } else {
         const transaction = await bettingGameContract.withdraw(withdrawAmount);
+        toast.loading("Withdrawal submitted, please wait.", {
+          duration: 3000,
+          style: {
+            marginTop: "50px",
+          },
+        });
         setResultIn(false);
         setWaiting(true);
         await transaction.wait();
         await getBalance(account);
+        toast.success(
+          `Withdrawal of ${
+            withdrawalAmount / 10000
+          }ETH successful, thanks for playing!`,
+          {
+            duration: 5000,
+            style: {
+              marginTop: "50px",
+            },
+          }
+        );
       }
     } catch (err) {
       toast.error("Something went wrong, please try again.", {
-        duration: 10000,
+        duration: 5000,
         style: {
           marginTop: "50px",
         },
@@ -360,13 +407,15 @@ function App() {
     if (
       betAmount < 100 ||
       betAmount > 1000 ||
-      betAmount > (balance / weiConv) * 10000
+      betAmount > (balance / weiConv) * 10000 ||
+      loading ||
+      waiting
     ) {
       setBetDisabled(true);
     } else {
       setBetDisabled(false);
     }
-  }, [betAmount, balance]);
+  }, [betAmount, balance, loading, waiting]);
 
   useEffect(() => {
     web3ModalRef.current = new Web3Modal({
@@ -416,6 +465,7 @@ function App() {
 
   useEffect(() => {
     setLoading(false);
+    setWaiting(false);
     setBetAmount("");
     const displayResult = () => {
       if (result) {
@@ -448,6 +498,7 @@ function App() {
     setBetAmount(e.target.value);
   };
 
+  console.log(depositAmount, withdrawalAmount / 10000);
   return (
     <div className="bg-[#1A202C] text-white min-h-screen h-full w-full flex flex-col">
       <Header
