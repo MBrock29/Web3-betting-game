@@ -142,12 +142,6 @@ function App() {
       setBetAmount(0);
     } catch (err) {
       setWaiting(false);
-      toast.error("Unable to fetch balance, please try again.", {
-        duration: 10000,
-        style: {
-          marginTop: "50px",
-        },
-      });
     }
   };
 
@@ -162,14 +156,7 @@ function App() {
       setBetAmount("");
       const outcome = await bettingGameContract.getResult();
       setResult(outcome);
-    } catch (err) {
-      toast.error("Unable to simulate result.  Please try again.", {
-        duration: 6000,
-        style: {
-          marginTop: "50px",
-        },
-      });
-    }
+    } catch (err) {}
   };
 
   const betHomeTeam = async (odds, perc) => {
