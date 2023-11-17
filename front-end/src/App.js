@@ -28,7 +28,6 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [betDisabled, setBetDisabled] = useState(true);
   const [contractBalance, setContractBalance] = useState(0);
-  const [fractions, setFractions] = useState(true);
 
   const getContractBalance = async () => {
     const provider = await getProviderOrSigner();
@@ -41,11 +40,28 @@ function App() {
     setContractBalance(ethers.formatEther(balance));
   };
 
+  const savedFractions = localStorage.getItem("fractions");
+  const initialFractions =
+    savedFractions !== null ? savedFractions === "true" : true;
+  const [fractions, setFractions] = useState(initialFractions);
+
   useEffect(() => {
     setTimeout(() => {
       getContractBalance();
     }, 3000);
   }, [balance, loading]);
+
+  useEffect(() => {
+    localStorage.setItem("fractions", fractions);
+  }, [fractions]);
+
+  useEffect(() => {
+    const savedFractions = localStorage.getItem("fractions");
+    console.log(savedFractions);
+    if (savedFractions !== null) {
+      setFractions(savedFractions === "true");
+    }
+  }, []);
 
   useEffect(() => {
     let toastTimer;
@@ -431,7 +447,7 @@ function App() {
   };
 
   return (
-    <div className="bg-[#1A202C] text-white h-full w-full flex flex-col">
+    <div className="bg-[#1A202C] text-white min-h-screen h-full w-full flex flex-col">
       <Header
         deposit={deposit}
         withdraw={withdraw}
