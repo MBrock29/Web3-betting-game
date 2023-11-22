@@ -7,6 +7,7 @@ import { ethers } from "ethers";
 import "./index.css";
 import { odds, homeWin, awayWin, draw } from "./components/header/Odds";
 import toast, { Toaster } from "react-hot-toast";
+import DepositForm from "./components/depositUtils";
 
 function App() {
   const [balance, setBalance] = useState(0);
@@ -39,6 +40,10 @@ function App() {
     );
     const balance = await provider.getBalance(contract.target);
     setContractBalance(ethers.formatEther(balance));
+  };
+
+  const handleDeposit = async (amount) => {
+    await DepositForm(amount, account, getBalance);
   };
 
   const savedFractions = localStorage.getItem("fractions");
@@ -144,13 +149,6 @@ function App() {
       setWaiting(false);
     }
   };
-
-  // const provider = await getProviderOrSigner();
-  // const bettingGameContract = new ethers.Contract(
-  //   BETTING_GAME_CONTRACT_ADDRESS,
-  //   abi,
-  //   provider
-  // );
 
   const getRandomNumber = async () => {
     try {
@@ -303,42 +301,42 @@ function App() {
     }
   };
 
-  const deposit = async () => {
-    try {
-      const provider = await getProviderOrSigner(true);
-      const bettingGameContract = new ethers.Contract(
-        BETTING_GAME_CONTRACT_ADDRESS,
-        abi,
-        provider
-      );
-      const transaction = await bettingGameContract.deposit({
-        value: ethers.parseUnits(depositAmount.toString(), "ether"),
-      });
-      toast.loading("Deposit submitted, please wait.", {
-        duration: 3000,
-        style: {
-          marginTop: "50px",
-        },
-      });
-      setResultIn(false);
-      setWaiting(true);
-      await transaction.wait();
-      await getBalance(account);
-      toast.success(`Deposit of ${depositAmount}ETH successful, good luck!`, {
-        duration: 6000,
-        style: {
-          marginTop: "50px",
-        },
-      });
-    } catch (err) {
-      toast.error("Deposit failed, please try again.", {
-        duration: 10000,
-        style: {
-          marginTop: "50px",
-        },
-      });
-    }
-  };
+  // const deposit = async () => {
+  //   try {
+  //     const provider = await getProviderOrSigner(true);
+  //     const bettingGameContract = new ethers.Contract(
+  //       BETTING_GAME_CONTRACT_ADDRESS,
+  //       abi,
+  //       provider
+  //     );
+  //     const transaction = await bettingGameContract.deposit({
+  //       value: ethers.parseUnits(depositAmount.toString(), "ether"),
+  //     });
+  //     toast.loading("Deposit submitted, please wait.", {
+  //       duration: 3000,
+  //       style: {
+  //         marginTop: "50px",
+  //       },
+  //     });
+  //     setResultIn(false);
+  //     setWaiting(true);
+  //     await transaction.wait();
+  //     await getBalance(account);
+  //     toast.success(`Deposit of ${depositAmount}ETH successful, good luck!`, {
+  //       duration: 6000,
+  //       style: {
+  //         marginTop: "50px",
+  //       },
+  //     });
+  //   } catch (err) {
+  //     toast.error("Deposit failed, please try again.", {
+  //       duration: 10000,
+  //       style: {
+  //         marginTop: "50px",
+  //       },
+  //     });
+  //   }
+  // };
 
   const withdraw = async () => {
     try {
@@ -494,7 +492,7 @@ function App() {
   return (
     <div className="bg-[#1A202C] text-white min-h-screen h-full w-full flex flex-col">
       <Header
-        deposit={deposit}
+        deposit={handleDeposit}
         withdraw={withdraw}
         withdrawalAllowed={withdrawalAllowed}
         address={account}
@@ -512,7 +510,7 @@ function App() {
       />
 
       <Toaster />
-      <div className="flex w-11/12 justify-evenly mx-auto text-sm sm:text-lg flex-col sm:flex-row">
+      {/* <div className="flex w-11/12 justify-evenly mx-auto text-sm sm:text-lg flex-col sm:flex-row">
         <div className="flex w-fit mx-auto h-fit mb-5 sm:mb-0 sm:w-4/12 flex-col sm:mr-5 sm:items-center bg-[#4A5568] p-5 rounded-lg sm:min-h-[430px] text-center">
           <div>
             <h4 className="mb-6">Stake an amount and select a result!</h4>
@@ -616,7 +614,7 @@ function App() {
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
