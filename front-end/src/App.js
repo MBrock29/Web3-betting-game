@@ -145,6 +145,13 @@ function App() {
     }
   };
 
+  // const provider = await getProviderOrSigner();
+  // const bettingGameContract = new ethers.Contract(
+  //   BETTING_GAME_CONTRACT_ADDRESS,
+  //   abi,
+  //   provider
+  // );
+
   const getRandomNumber = async () => {
     try {
       const provider = await getProviderOrSigner();
