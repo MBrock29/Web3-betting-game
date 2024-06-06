@@ -2,8 +2,8 @@ export const odds = [
   {
     homeTeam: "Man City",
     homeOddsFrac: "3/5",
-    homeOddsDec: 1.6,
-    homePerc: 59,
+    homeOddsDec: 10.6,
+    homePerc: 99,
     draw: "Draw",
     drawOddsFrac: "17/5",
     drawOddsDec: 4.4,

@@ -29,7 +29,7 @@ const DepositForm = async (amount, account, getBalance) => {
     });
   } catch (err) {
     toast.error("Deposit failed, please try again.", {
-      duration: 10000,
+      duration: 6000,
       style: {
         marginTop: "50px",
       },
