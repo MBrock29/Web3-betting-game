@@ -1,70 +1,60 @@
-# Getting Started with Create React App
+# Betting DApp
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is a decentralized betting application built using React, Next.js, and Solidity. Users can deposit, withdraw, and place bets on various football games using the Sepolia test network on the Ethereum blockchain.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- **Wallet Connection:** Users can connect their Ethereum wallet using Web3Modal.
+- **Deposits and Withdrawals:** Users can deposit ETH to receive credits and withdraw credits back to ETH.
+- **Betting:** Users can place bets on football matches with odds displayed in both fractional and decimal formats.
+- **Live Balance Updates:** User and contract balances are updated in real-time.
+- **Results Display:** Betting outcomes are displayed based on the results fetched from the blockchain.
 
-### `npm start`
+## Live Demo
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+You can access the live application [here](https://web3-betting-game-35x5.vercel.app/).
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Watch a video demonstration of the app on [LinkedIn](https://www.linkedin.com/feed/update/urn:li:activity:7131096655029792768/).
 
-### `npm test`
+## How to Use
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Prerequisites
 
-### `npm run build`
+- **MetaMask:** Install the MetaMask extension on your browser from [here](https://metamask.io/).
+- **Sepolia Test ETH:** You will need some Sepolia test ETH to interact with the application. You can request test ETH from a Sepolia faucet such as [Sepolia Faucet](https://faucet.sepolia.dev/).
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Steps
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. **Connect Wallet:**
+   - Click on the "Log in" button to connect your Ethereum wallet.
+   - Ensure you are connected to the Sepolia test network.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+2. **Depositing ETH:**
+   - Click on the "Deposit" button.
+   - Enter the amount in credits (0.1 test ETH = 1000 credits).
+   - Confirm the transaction in MetaMask.
 
-### `npm run eject`
+3. **Placing Bets:**
+   - Select a match and choose to bet on either the home team, away team, or a draw.
+   - Enter the amount to bet and confirm the transaction in MetaMask.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+4. **Withdrawing ETH:**
+   - Click on the "Withdraw" button.
+   - Enter the amount in credits.
+   - Confirm the transaction in MetaMask.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Project Structure
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- **App.js:** The main component that integrates all parts of the application including the header, wallet connection, and betting logic.
+- **Header.js:** Contains the header component that handles user interactions for deposits, withdrawals, and displaying user balance.
+- **Odds.js:** Contains the odds data for various football matches.
+- **Game.sol:** The Solidity contract for handling the betting logic on the Ethereum blockchain.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Technologies Used
 
-## Learn More
+- **React & Next.js:** Frontend framework for building the user interface.
+- **Solidity:** Smart contract development language for the Ethereum blockchain.
+- **Web3Modal:** Library for connecting to various Ethereum wallets.
+- **Ethers.js:** Library for interacting with the Ethereum blockchain.
+- **Tailwind CSS:** Utility-first CSS framework for styling.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
