@@ -1,11 +1,11 @@
 # Betting DApp
 
-This project is a decentralized betting application built using React, Next.js, and Solidity. Users can deposit, withdraw, and place bets on various football games using the Sepolia test network on the Ethereum blockchain.
+This project is a decentralized betting application built using React, Next.js, and Solidity. Users can deposit, withdraw, and place bets on various simulated football games using the Sepolia test network on the Ethereum blockchain.
 
 ## Features
 
 - **Wallet Connection:** Users can connect their Ethereum wallet using Web3Modal.
-- **Deposits and Withdrawals:** Users can deposit ETH to receive credits and withdraw credits back to ETH.
+- **Deposits and Withdrawals:** Users can deposit test ETH to receive credits and withdraw credits back to test ETH.
 - **Betting:** Users can place bets on football matches with odds displayed in both fractional and decimal formats.
 - **Live Balance Updates:** User and contract balances are updated in real-time.
 - **Results Display:** Betting outcomes are displayed based on the results fetched from the blockchain.
@@ -22,6 +22,8 @@ Watch a video demonstration of the app on [LinkedIn](https://www.linkedin.com/fe
 
 - **MetaMask:** Install the MetaMask extension on your browser from [here](https://metamask.io/).
 - **Sepolia Test ETH:** You will need some Sepolia test ETH to interact with the application. You can request test ETH from a Sepolia faucet such as [Sepolia Faucet](https://faucet.sepolia.dev/).
+
+- **My Faucet** I also have my own Sepolia faucet [here](https://sepolia-faucet-pi.vercel.app/)
 
 ### Steps
 
