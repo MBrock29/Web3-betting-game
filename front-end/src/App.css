@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  background-color: "#1A202C";
+  background-color: '#1A202C';
 }
 
 .App-logo {
@@ -13,9 +13,12 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
-
 .App-header {
-  background-color: #282c34;
+  background-color: radial-gradient(
+    50% 50% at 50% 50%,
+    #250e40 36.55%,
+    rgba(12, 7, 19, 0) 100%
+  );
   min-height: 100vh;
   display: flex;
   flex-direction: column;
